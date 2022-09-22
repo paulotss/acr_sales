@@ -3,8 +3,9 @@ import SearchBar from "../components/SearchBar";
 import Category from "../components/Category";
 import { categories, products } from "../mocks/data";
 import ItemDisplay from "../components/ItemDisplay";
+import Footer from "../components/Footer";
 
-const HomePages = () => {
+const HomePage = () => {
   return (
     <main>
       <Head />
@@ -19,7 +20,7 @@ const HomePages = () => {
             ))
           }
         </article>
-        <article className="flex justify-center bg-white p-10">
+        <article className="flex justify-center bg-white p-10 mt-10">
           {
             products.map((product) => (
               <ItemDisplay key={ product.id } title={ product.title } price={ product.price } />
@@ -27,8 +28,9 @@ const HomePages = () => {
           }
         </article>
       </section>
+      <Footer />
     </main>
   )
 }
 
-export default HomePages;
+export default HomePage;
