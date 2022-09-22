@@ -40,3 +40,30 @@ export const categories = [
     image: "",
   },
 ];
+
+export const products = [
+  {
+    id: 1,
+    title: "Produto 1",
+    price: 70,
+    image: "",
+  },
+  {
+    id: 2,
+    title: "Produto 2",
+    price: 40,
+    image: "",
+  },
+  {
+    id: 3,
+    title: "Produto 3",
+    price: 50,
+    image: "",
+  },
+  {
+    id: 4,
+    title: "Produto 4",
+    price: 30,
+    image: "",
+  },
+];

@@ -1,7 +1,8 @@
 import Head from "../components/Head";
 import SearchBar from "../components/SearchBar";
 import Category from "../components/Category";
-import { categories } from "../mocks/data";
+import { categories, products } from "../mocks/data";
+import ItemDisplay from "../components/ItemDisplay";
 
 const HomePages = () => {
   return (
@@ -15,6 +16,13 @@ const HomePages = () => {
           {
             categories.map((category) => (
               <Category key={ category.id } name={ category.name } />
+            ))
+          }
+        </article>
+        <article className="flex justify-center bg-white p-10">
+          {
+            products.map((product) => (
+              <ItemDisplay key={ product.id } title={ product.title } price={ product.price } />
             ))
           }
         </article>
