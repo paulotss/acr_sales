@@ -1,10 +1,13 @@
 import Head from "../components/Head";
+import SearchBar from "../components/SearchBar";
 
 const HomePages = () => {
   return (
     <main>
       <Head />
-      <h1>HomePage</h1>
+      <section className="p-10 bg-green-900">
+        <SearchBar />
+      </section>
     </main>
   )
 }
