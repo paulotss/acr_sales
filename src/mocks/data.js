@@ -44,26 +44,30 @@ export const categories = [
 export const products = [
   {
     id: 1,
-    title: "Produto 1",
+    title: "Serviço de limpeza geral",
     price: 70,
     image: "",
+    tags: ["limpeza", "serviço"]
   },
   {
     id: 2,
-    title: "Produto 2",
+    title: "TV Samsung 14pol",
     price: 40,
     image: "",
+    tags: ["tv", "eletrônico"]
   },
   {
     id: 3,
-    title: "Produto 3",
+    title: "TV LG 32pol",
     price: 50,
     image: "",
+    tags: ["tv", "eletrônico"]
   },
   {
     id: 4,
-    title: "Produto 4",
+    title: "Serviços gerais",
     price: 30,
     image: "",
+    tags: ["manutenção", "serviço"]
   },
 ];

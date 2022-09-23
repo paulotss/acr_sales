@@ -8,7 +8,8 @@ const SearchBar = () => {
 
   const serachProducts = ({ target }) => {
     const { value } = target;
-    const results = products.filter((product) => product.title.includes(value) && value !== "");
+    const regex = RegExp(value, 'i')
+    const results = products.filter((product) => product.title.match(regex) && value !== "");
     setSearch((state) => ({
       ...state,
       term: value,

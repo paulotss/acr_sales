@@ -34,14 +34,14 @@ const HomePage = () => {
             </div>
           </article>
         }
-        <article className="flex justify-center mt-10">
+        <article className="flex justify-center mt-10 overflow-x-auto">
           {
             categories.map((category) => (
               <Category key={ category.id } name={ category.name } />
             ))
           }
         </article>
-        <article className="flex justify-center bg-white p-10 mt-10">
+        <article className="flex justify-start bg-white p-10 mt-10 overflow-x-auto">
           {
             products.map((product) => (
               <ItemDisplay key={ product.id } title={ product.title } price={ product.price } />
