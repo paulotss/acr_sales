@@ -6,9 +6,11 @@ import ItemDisplay from "../components/ItemDisplay";
 import Footer from "../components/Footer";
 import { categories, products } from "../mocks/data";
 import AppContext from "../contexts/AppContext";
+import { useNavigate } from "react-router-dom";
 
 const HomePage = () => {
   const { search } = useContext(AppContext);
+  const navigate = useNavigate();
 
   return (
     <main>
@@ -23,12 +25,13 @@ const HomePage = () => {
             <div className="bg-white">
               {
                 search.results.map((item) => (
-                  <p
+                  <button
                     key={ item.id }
-                    className="text-sm p-4 cursor-pointer hover:bg-gray-300"
+                    onClick={ () => navigate(`/item/${item.id}`) }
+                    className="block w-full text-left text-sm p-4 cursor-pointer hover:bg-gray-300"
                   >
                     { item.title }
-                  </p>
+                  </button>
                 ))
               }
             </div>
