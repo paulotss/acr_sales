@@ -47,7 +47,7 @@ const HomePage = () => {
         <article className="flex justify-start bg-white p-10 mt-10 overflow-x-auto">
           {
             products.map((product) => (
-              <ItemDisplay key={ product.id } title={ product.title } price={ product.price } />
+              <ItemDisplay key={ product.id } id={ product.id } title={ product.title } price={ product.price } />
             ))
           }
         </article>
