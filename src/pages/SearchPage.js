@@ -11,7 +11,11 @@ const SearchPage = () => {
     <main>
       <Head />
       <section className="p-10 bg-green-900">
-        <h1 className="font-bold text-white text-xl">Search Page</h1>
+        <h1 className="text-white text-xl">
+          Buscando por:
+          {' '}
+          <span className="font-bold">{ search.term }</span>
+        </h1>
       </section>
       <section className="p-10">
         {
