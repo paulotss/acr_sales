@@ -13,7 +13,7 @@ const SearchCategory = () => {
     console.log(id);
     const result = products.filter((prod) => prod.category === Number(id));
     setItems(result);
-  }, []);
+  }, [id]);
 
   return (
     <main>
