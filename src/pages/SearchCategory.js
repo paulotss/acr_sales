@@ -10,7 +10,6 @@ const SearchCategory = () => {
   const { id } = useParams();
 
   useEffect(() => {
-    console.log(id);
     const result = products.filter((prod) => prod.category === Number(id));
     setItems(result);
   }, [id]);
@@ -30,6 +29,7 @@ const SearchCategory = () => {
           items.map((product) => (
             <ItemList
               key={ product.id }
+              id={ product.id }
               title={ product.title }
               price={ product.price }
               description={ product.description }
