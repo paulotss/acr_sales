@@ -2,11 +2,13 @@ import { useContext } from 'react';
 import { MagnifyingGlassIcon } from  '@heroicons/react/24/outline';
 import AppContext from '../contexts/AppContext';
 import { products } from '../mocks/data';
+import { useNavigate } from 'react-router-dom';
 
 const SearchBar = () => {
   const { search, setSearch } = useContext(AppContext);
+  const navigate = useNavigate();
 
-  const serachProducts = ({ target }) => {
+  const searchProducts = ({ target }) => {
     const { value } = target;
     const regex = RegExp(value, 'i')
     const results = products.filter((product) => product.title.match(regex) && value !== "");
@@ -24,9 +26,12 @@ const SearchBar = () => {
         placeholder="Estou procurando por..."
         className="p-2 w-full outline-none border-2 border-white focus:border-gray-300"
         value={ search.term }
-        onChange={ serachProducts }
+        onChange={ searchProducts }
       />
-      <button className="p-2 bg-gray-300">
+      <button
+        className="p-2 bg-gray-300"
+        onClick={() => navigate('/search')}
+      >
         <MagnifyingGlassIcon className='h-6 w-6 text-green-900' />
       </button>
     </section>
