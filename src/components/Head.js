@@ -1,8 +1,10 @@
+import { Link } from "react-router-dom";
+
 const Head = () => {
   return (
     <section className="flex justify-between w-full p-4">
       <div className="flex">
-        <div className="w-10 h-10 bg-green-900"></div>
+        <Link to="/" className="w-10 h-10 bg-green-900"></Link>
         <h1 className="ml-2 font-bold text-2xl text-green-900">Acrópole</h1>
       </div>
 

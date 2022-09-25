@@ -37,7 +37,7 @@ const HomePage = () => {
         <article className="flex justify-center mt-10 overflow-x-auto">
           {
             categories.map((category) => (
-              <Category key={ category.id } name={ category.name } />
+              <Category key={ category.id } name={ category.name } id={ category.id } />
             ))
           }
         </article>
