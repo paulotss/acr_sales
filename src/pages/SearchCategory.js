@@ -3,16 +3,22 @@ import { useParams } from "react-router-dom";
 import Footer from "../components/Footer";
 import Head from "../components/Head";
 import ItemList from "../components/ItemList";
-import { products, categories } from '../mocks/data';
+import { categories } from '../mocks/data';
+import axios from "axios";
 
 const SearchCategory = () => {
-  const [ items, setItems ] = useState([]);
+  const [ products, setProducts ] = useState([]);
   const { id } = useParams();
 
+  const getProducts = async () => {
+    const result = await axios.get(`http://localhost:3001/products/${id}`);
+    setProducts(result.data);
+    console.log(result.data);
+  }
+
   useEffect(() => {
-    const result = products.filter((prod) => prod.category === Number(id));
-    setItems(result);
-  }, [id]);
+    getProducts();
+  }, []);
 
   return (
     <main>
@@ -26,7 +32,7 @@ const SearchCategory = () => {
       </section>
       <section className="p-10">
         {
-          items.map((product) => (
+          products.map((product) => (
             <ItemList
               key={ product.id }
               id={ product.id }

@@ -4,7 +4,7 @@ import SearchBar from "../components/SearchBar";
 import Category from "../components/Category";
 import ItemDisplay from "../components/ItemDisplay";
 import Footer from "../components/Footer";
-import { categories, products } from "../mocks/data";
+import { categories } from "../mocks/data";
 import AppContext from "../contexts/AppContext";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -18,6 +18,7 @@ const HomePage = () => {
     const result = await axios.get("http://localhost:3001/products");
     setProducts(result.data);
   }
+
   useEffect(() => {
     getProducts();
   }, [])
