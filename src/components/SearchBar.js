@@ -1,10 +1,10 @@
 import { useContext } from 'react';
 import { MagnifyingGlassIcon } from  '@heroicons/react/24/outline';
 import AppContext from '../contexts/AppContext';
-import { products } from '../mocks/data';
 import { useNavigate } from 'react-router-dom';
 
-const SearchBar = () => {
+const SearchBar = (props) => {
+  const { products } = props;
   const { search, setSearch } = useContext(AppContext);
   const navigate = useNavigate();
 

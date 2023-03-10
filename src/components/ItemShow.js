@@ -1,6 +1,6 @@
 const ItemShow = (props) => {
 
-  const { title, price, seller } = props;
+  const { title, price, description } = props;
 
   return (
     <article className="flex">
@@ -10,10 +10,11 @@ const ItemShow = (props) => {
           { price.toLocaleString('pt-BR', { style:'currency', currency:'BRL' }) }
         </p>
         <p className="mb-3 text-xl font-bold text-green-900">{ title }</p>
+        <p className="mb-3 text-green-900">{ description }</p>
         <div className="p-2 bg-gray-300 border-2 border-green-900">
-          <p className="text-xl font-bold text-green-900">{ seller.name }</p>
-          <p className="font-bold text-green-900">Telefone: { seller.phone }</p>
-          <p className="font-bold text-green-900">Pix: { seller.pix }</p>
+          <p className="text-xl font-bold text-green-900">Name</p>
+          <p className="font-bold text-green-900">Telefone: phone</p>
+          <p className="font-bold text-green-900">Pix: pix</p>
         </div>
       </div>
     </article>

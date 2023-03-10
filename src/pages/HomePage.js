@@ -28,7 +28,7 @@ const HomePage = () => {
       <Head />
       <section className="p-10 bg-green-900">
         <article>
-          <SearchBar />
+          <SearchBar products={products} />
         </article>
         {
           search.results.length > 0 &&

@@ -13,7 +13,6 @@ const SearchCategory = () => {
   const getProducts = async () => {
     const result = await axios.get(`http://localhost:3001/products/${id}`);
     setProducts(result.data);
-    console.log(result.data);
   }
 
   useEffect(() => {
