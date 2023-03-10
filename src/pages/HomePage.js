@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import Head from "../components/Head";
 import SearchBar from "../components/SearchBar";
 import Category from "../components/Category";
@@ -7,10 +7,20 @@ import Footer from "../components/Footer";
 import { categories, products } from "../mocks/data";
 import AppContext from "../contexts/AppContext";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const HomePage = () => {
+  const [products, setProducts] = useState([]);
   const { search } = useContext(AppContext);
   const navigate = useNavigate();
+
+  const getProducts = async () => {
+    const result = await axios.get("http://localhost:3001/products");
+    setProducts(result.data);
+  }
+  useEffect(() => {
+    getProducts();
+  }, [])
 
   return (
     <main>
