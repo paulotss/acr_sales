@@ -6,8 +6,8 @@ import PersonalData from "../components/profile/PersonalData";
 import Requests from "../components/profile/Requests";
 
 const Profile = () => {
-  const [page, setPage] = useState(<PersonalData />)
-  const [active, setActive] = useState(0);
+  const [page, setPage] = useState(<NewAdvertForm />)
+  const [active, setActive] = useState(2);
 
   return (
     <main>
