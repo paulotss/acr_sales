@@ -21,7 +21,6 @@ const Profile = () => {
 
   useEffect(() => {
     setActProfile(Number(id))
-    console.log(actProfile);
   }, []);
 
   return (
@@ -40,7 +39,7 @@ const Profile = () => {
                 `p-2 border-2 hover:border-green-900 cursor-pointer
                 ${ actProfile === 0 ? 'bg-green-900 text-white border-green-900' : 'border-green-100'}`
               }
-              onClick={ () =>  { setActProfile(0); console.log(actProfile); }}
+              onClick={ () =>  { setActProfile(0); }}
             >
               Meus dados
             </li>
