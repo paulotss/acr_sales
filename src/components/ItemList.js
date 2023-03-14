@@ -1,10 +1,16 @@
 import { Link } from "react-router-dom";
 
 const ItemList = (props) => {
-  const { id, title, price, description } = props;
+  const { id, title, price, description, cover } = props;
   return (
     <Link to={ `/item/${id}` } className="flex mb-5 flex-row">
-      <div className="mr-5 w-1/3 h-64 bg-gray-300"></div>
+      <div
+        className="mr-5 w-1/3 h-64 bg-contain bg-center bg-no-repeat"
+        style={{
+          backgroundImage: `url(http://localhost:3001/static/${cover})`
+        }}
+      >
+      </div>
       <div className="w-2/3">
         <div className="flex justify-between text-green-900">
           <h4 className="text-xl">{ title }</h4>

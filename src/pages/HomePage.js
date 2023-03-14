@@ -1,23 +1,34 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import Head from "../components/Head";
 import SearchBar from "../components/SearchBar";
 import Category from "../components/Category";
 import ItemDisplay from "../components/ItemDisplay";
 import Footer from "../components/Footer";
-import { categories, products } from "../mocks/data";
+import { categories } from "../mocks/data";
 import AppContext from "../contexts/AppContext";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const HomePage = () => {
+  const [products, setProducts] = useState([]);
   const { search } = useContext(AppContext);
   const navigate = useNavigate();
+
+  const getProducts = async () => {
+    const result = await axios.get("http://localhost:3001/products");
+    setProducts(result.data);
+  }
+
+  useEffect(() => {
+    getProducts();
+  }, [])
 
   return (
     <main>
       <Head />
       <section className="p-10 bg-green-900">
         <article>
-          <SearchBar />
+          <SearchBar products={products} />
         </article>
         {
           search.results.length > 0 &&
@@ -47,7 +58,13 @@ const HomePage = () => {
         <article className="flex justify-start bg-white p-10 mt-10 overflow-x-auto">
           {
             products.map((product) => (
-              <ItemDisplay key={ product.id } id={ product.id } title={ product.title } price={ product.price } />
+              <ItemDisplay
+                key={ product.id }
+                id={ product.id }
+                title={ product.title }
+                price={ product.price }
+                cover={ product.cover }
+              />
             ))
           }
         </article>

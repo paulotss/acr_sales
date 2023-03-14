@@ -7,9 +7,13 @@ const Provider = ({ children }) => {
     results: [],
   });
 
+  const [actProfile, setActProfile] = useState(0);
+
   const contextValue = {
     search,
     setSearch,
+    actProfile,
+    setActProfile
   }
 
   return (
