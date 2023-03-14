@@ -38,6 +38,7 @@ const SearchCategory = () => {
               title={ product.title }
               price={ product.price }
               description={ product.description }
+              cover={ product.cover }
             />  
           ))
         }

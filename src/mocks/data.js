@@ -1,12 +1,12 @@
 export const categories = [
   {
-    id: 6,
+    id: 1,
     name: "Imóveis",
     image: "",
   },
   {
-    id: 4,
-    name: "Autos e peças",
+    id: 2,
+    name: "Livros",
     image: "",
   },
   {
@@ -15,7 +15,7 @@ export const categories = [
     image: "",
   },
   {
-    id: 2,
+    id: 4,
     name: "Eletrônicos",
     image: "",
   },
@@ -25,7 +25,7 @@ export const categories = [
     image: "",
   },
   {
-    id: 1,
+    id: 6,
     name: "Serviços",
     image: "",
   },

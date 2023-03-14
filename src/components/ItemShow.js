@@ -1,10 +1,16 @@
 const ItemShow = (props) => {
 
-  const { title, price, description } = props;
+  const { title, price, description, cover } = props;
 
   return (
-    <article className="flex">
-      <div className="h-96 w-96 bg-gray-300 mr-6"></div>
+    <article className="flex justify-center">
+      <div
+        className="shrink-0 h-96 w-96 m-2 bg-contain bg-center bg-no-repeat"
+        style={{
+          backgroundImage: `url(http://localhost:3001/static/${cover})`
+        }}
+      >
+      </div>
       <div>
         <p className="mb-3 text-2xl font-bold text-green-900">
           { price.toLocaleString('pt-BR', { style:'currency', currency:'BRL' }) }
