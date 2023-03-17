@@ -15,7 +15,6 @@ const Adverts = () => {
         headers: { "authorization": sessionStorage.getItem("auth") }
       });
       setProducts(result.data);
-      console.log(result.data)
     } catch (err) {
       navigate("/login");
     }

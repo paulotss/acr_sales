@@ -26,7 +26,7 @@ const Login = () => {
     try {
       const result = await axios.post("http://localhost:3001/login", user);
       sessionStorage.setItem("auth", result.data);
-      return navigate("/profile/0");
+      return navigate("/");
     } catch (err) {
       alert(err);
     }
