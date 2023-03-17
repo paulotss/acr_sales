@@ -1,16 +1,24 @@
 import { useState, useEffect, useContext } from "react";
 import ItemProfile from "../ItemProfile";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import AppContext from "../../contexts/AppContext";
 
 const Adverts = () => {
+  const navigate = useNavigate();
   const [products, setProducts] = useState([]);
   const { setActProfile } = useContext(AppContext);
 
   const getProducts = async () => {
-    const result = await axios.get("http://localhost:3001/products");
-    setProducts(result.data);
+    try {
+      const result = await axios.get("http://localhost:3001/user/products", {
+        headers: { "authorization": sessionStorage.getItem("auth") }
+      });
+      setProducts(result.data);
+      console.log(result.data)
+    } catch (err) {
+      navigate("/login");
+    }
   }
 
   useEffect(() => {
