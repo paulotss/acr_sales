@@ -9,7 +9,7 @@ const Head = () => {
       </div>
 
       <div className="flex">
-        <button className="mr-2 p-2 font-bold bg-gray-300 text-green-900">Entrar</button>
+        <Link to="/login" className="mr-2 p-2 font-bold bg-gray-300 text-green-900">Entrar</Link>
         <Link to="/profile/3" className="p-2 font-bold bg-green-900 text-white">Anunciar</Link>
       </div>
     </section>
