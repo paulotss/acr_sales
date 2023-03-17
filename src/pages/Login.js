@@ -1,14 +1,18 @@
 import Head from "../components/Head";
 import Footer from "../components/Footer";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, redirect, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const Login = () => {
+  const navigate = useNavigate();
+
   const [user, setUser] = useState({
     email: "",
     password: "",
   });
-  const [validation, setValidation] = useState(false)
+
+  const [validation, setValidation] = useState(false);
 
   const handleChange = ({ target }) => {
     const { value, name } = target;
@@ -16,7 +20,16 @@ const Login = () => {
       ...user,
       [name]: value,
     });
-    console.log(user)
+  }
+
+  const submitLogin = async () => {
+    try {
+      const result = await axios.post("http://localhost:3001/login", user);
+      sessionStorage.setItem("auth", result.data);
+      return navigate("/profile/0");
+    } catch (err) {
+      alert(err);
+    }
   }
 
   useEffect(() => {
@@ -64,6 +77,7 @@ const Login = () => {
               type="button"
               disabled={!validation}
               className="bg-green-900 p-2 w-24 text-white disabled:bg-gray-400"
+              onClick={ submitLogin }
             >
               Entrar
             </button>
