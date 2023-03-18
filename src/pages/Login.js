@@ -36,7 +36,6 @@ const Login = () => {
     const emailPattern = /^((?!\.)[\w-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/igm
     const result = emailPattern.test(user.email) && user.password.length > 5;
     setValidation(result);
-    console.log(validation)
   }, [user])
 
   return (
