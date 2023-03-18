@@ -1,13 +1,18 @@
 import { useEffect, useState } from "react";
 import Footer from "../components/Footer";
 import Head from "../components/Head";
+import axios from 'axios';
+import { useNavigate } from "react-router-dom";
 
 const NewUserForm = () => {
+  const navigate = useNavigate();
+
   const [userData, setUserData] = useState({
-    first_name: "",
-    last_name: "",
+    firstName: "",
+    lastName: "",
     email: "",
     password: "",
+    cellPhone: "",
     whatsapp: "",
   });
 
@@ -27,19 +32,21 @@ const NewUserForm = () => {
 
   const userValidate = () => {
     const {
-      first_name,
-      last_name,
+      firstName,
+      lastName,
       email,
       password,
+      cellPhone,
       whatsapp,
     } = userData;
 
     const emailPattern = /^((?!\.)[\w-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/igm
     const validation = [
-      first_name.length > 4,
-      last_name.length > 4,
+      firstName.length > 4,
+      lastName.length > 4,
       emailPattern.test(email),
       (password.length > 5) && (password === confirmPassword),
+      cellPhone.length === 11,
       whatsapp.length === 11,
     ];
 
@@ -77,6 +84,18 @@ const NewUserForm = () => {
     },);
   }
 
+  const submitForm = async () => {
+    try {
+      const result = await axios.post(
+        "http://localhost:3001/user/create",
+        userData
+      );
+      navigate("/login");
+    } catch (error) {
+      alert("Houve um problema");
+    }
+  }
+
   useEffect(() => {
     if(userValidate() && adressValidate()) {
       setIsValid(true);
@@ -95,25 +114,25 @@ const NewUserForm = () => {
       <section className="flex justify-center align-center mt-5">
         <article className="p-5 border w-[70%]">
           <div className="mb-5">
-            <label htmlFor="first_name" className="text-green-900">Nome</label>
+            <label htmlFor="firstName" className="text-green-900">Nome</label>
             <input
               type="text"
-              name="first_name"
-              id="first_name"
+              name="firstName"
+              id="firstName"
               className="border-2 p-2 w-full"
               onChange={ handleChangeUser }
-              value={ userData.first_name }
+              value={ userData.firstName }
             />
           </div>
           <div className="mb-5">
-            <label htmlFor="last_name" className="text-green-900">Sobrenome</label>
+            <label htmlFor="lastName" className="text-green-900">Sobrenome</label>
             <input
               type="text"
-              name="last_name"
-              id="last_name"
+              name="lastName"
+              id="lastName"
               className="border-2 p-2 w-full"
               onChange={ handleChangeUser }
-              value={ userData.last_name }
+              value={ userData.lastName }
             />
           </div>
           <div className="mb-5">
@@ -125,6 +144,17 @@ const NewUserForm = () => {
               className="border-2 p-2 w-full"
               onChange={ handleChangeUser }
               value={ userData.email }
+            />
+          </div>
+          <div className="mb-5">
+            <label htmlFor="cellPhone" className="text-green-900">Celular</label>
+            <input
+              type="number"
+              name="cellPhone"
+              id="cellPhone"
+              className="border-2 p-2 w-full"
+              onChange={ handleChangeUser }
+              value={ userData.cellPhone }
             />
           </div>
           <div className="mb-5">
@@ -245,6 +275,7 @@ const NewUserForm = () => {
             type="button"
             disabled={!isValid}
             className="bg-green-900 p-2 w-24 text-white disabled:bg-gray-400"
+            onClick={ submitForm }
           >
             Cadastrar!
           </button>
