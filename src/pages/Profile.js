@@ -4,14 +4,23 @@ import PersonalData from "../components/profile/PersonalData";
 import Requests from "../components/profile/Requests";
 import Adverts from "../components/profile/Adverts";
 import NewAdvertForm from "../components/profile/NewAdvertForm";
-import { useParams, useLocation } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import AppContext from "../contexts/AppContext";
+import axios from "axios";
 
 const Profile = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
+  const [user, setUser] = useState({});
 
   const pages = [
-    <PersonalData />,
+    <PersonalData
+      firstName={ user.firstName }
+      lastName={ user.lastName }
+      email={ user.email }
+      cellPhone={ user.cellPhone }
+      whatsapp={ user.whatsapp }
+    />,
     <Requests />,
     <Adverts />,
     <NewAdvertForm />
@@ -20,7 +29,21 @@ const Profile = () => {
   const { actProfile, setActProfile } = useContext(AppContext);
 
   useEffect(() => {
+    const getUser = async () => {
+      try {
+        const result = await axios.get(
+          "http://localhost:3001/user",
+          {
+            headers: { "authorization": sessionStorage.getItem("auth") }
+          }
+        );
+        setUser(result.data);
+      } catch (error) {
+        navigate("/login");
+      }
+    }
     setActProfile(Number(id))
+    getUser();
   }, []);
 
   return (
