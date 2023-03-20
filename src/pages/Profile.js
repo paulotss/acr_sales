@@ -23,7 +23,9 @@ const Profile = () => {
     />,
     <Requests />,
     <Adverts />,
-    <NewAdvertForm />
+    <NewAdvertForm
+      userId={ user.id }
+    />
   ];
 
   const { actProfile, setActProfile } = useContext(AppContext);
