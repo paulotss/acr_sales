@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 import ItemProfile from "../ItemProfile";
-import axios from "axios";
+import axios from "../../http";
 import { Link, useNavigate } from "react-router-dom";
 import AppContext from "../../contexts/AppContext";
 
@@ -11,7 +11,7 @@ const Adverts = () => {
 
   const getProducts = async () => {
     try {
-      const result = await axios.get("http://localhost:3001/user/products", {
+      const result = await axios.get("/user/products", {
         headers: { "authorization": sessionStorage.getItem("auth") }
       });
       setProducts(result.data);

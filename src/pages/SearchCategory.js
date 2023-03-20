@@ -4,14 +4,14 @@ import Footer from "../components/Footer";
 import Head from "../components/Head";
 import ItemList from "../components/ItemList";
 import { categories } from '../mocks/data';
-import axios from "axios";
+import axios from "../http";
 
 const SearchCategory = () => {
   const [ products, setProducts ] = useState([]);
   const { id } = useParams();
 
   const getProducts = async () => {
-    const result = await axios.get(`http://localhost:3001/products/${id}`);
+    const result = await axios.get(`/products/${id}`);
     setProducts(result.data);
   }
 

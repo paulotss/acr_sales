@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "../../http";
 import { useState } from "react";
 
 const NewAdvertForm = () => {
@@ -36,7 +36,7 @@ const NewAdvertForm = () => {
   }
 
   const submitForm = async () => {
-    const result = await axios.post('http://localhost:3001/product', advert, {
+    const result = await axios.post('/product', advert, {
       headers: { 'Content-Type': 'multipart/form-data' }
     });
     if (result.status === 201) console.log("ok!");
