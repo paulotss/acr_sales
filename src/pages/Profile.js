@@ -6,7 +6,7 @@ import Adverts from "../components/profile/Adverts";
 import NewAdvertForm from "../components/profile/NewAdvertForm";
 import { useParams, useNavigate } from "react-router-dom";
 import AppContext from "../contexts/AppContext";
-import axios from "axios";
+import axios from "../http";
 
 const Profile = () => {
   const { id } = useParams();
@@ -32,7 +32,7 @@ const Profile = () => {
     const getUser = async () => {
       try {
         const result = await axios.get(
-          "http://localhost:3001/user",
+          "/user",
           {
             headers: { "authorization": sessionStorage.getItem("auth") }
           }

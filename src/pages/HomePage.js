@@ -7,7 +7,7 @@ import Footer from "../components/Footer";
 import { categories } from "../mocks/data";
 import AppContext from "../contexts/AppContext";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import axios from "../http";
 
 const HomePage = () => {
   const [products, setProducts] = useState([]);
@@ -15,7 +15,7 @@ const HomePage = () => {
   const navigate = useNavigate();
 
   const getProducts = async () => {
-    const result = await axios.get("http://localhost:3001/products");
+    const result = await axios.get("/products");
     setProducts(result.data);
   }
 

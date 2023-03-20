@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "../http";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Footer from "../components/Footer";
@@ -10,7 +10,7 @@ const ItemPage = () => {
   const { id } = useParams();
 
   const getProduct = async () => {
-    const result = await axios.get(`http://localhost:3001/product/${id}`);
+    const result = await axios.get(`/product/${id}`);
     setProduct(result.data);
   }
 

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Footer from "../components/Footer";
 import Head from "../components/Head";
-import axios from 'axios';
+import axios from '../http';
 import { useNavigate } from "react-router-dom";
 
 const NewUserForm = () => {
@@ -87,7 +87,7 @@ const NewUserForm = () => {
   const submitForm = async () => {
     try {
       const result = await axios.post(
-        "http://localhost:3001/user/create",
+        "/user/create",
         userData
       );
       navigate("/login");

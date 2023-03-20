@@ -2,7 +2,7 @@ import Head from "../components/Head";
 import Footer from "../components/Footer";
 import { useEffect, useState } from "react";
 import { Link, redirect, useNavigate } from "react-router-dom";
-import axios from "axios";
+import axios from "../http";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -24,7 +24,7 @@ const Login = () => {
 
   const submitLogin = async () => {
     try {
-      const result = await axios.post("http://localhost:3001/login", user);
+      const result = await axios.post("/login", user);
       sessionStorage.setItem("auth", result.data);
       return navigate("/");
     } catch (err) {
