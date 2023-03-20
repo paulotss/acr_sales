@@ -1,14 +1,14 @@
 import { Link } from "react-router-dom";
 
-
-
 const ItemDisplay = (props) => {
+  const BASE_URL = process.env.REACT_APP_API_BASE_URL;
+
   return (
     <Link to={ `/item/${props.id}` } className="m-3">
       <div
         className="w-64 h-64 bg-contain bg-center bg-no-repeat"
         style={{
-          backgroundImage: `url(http://localhost:3001/static/${props.cover})`
+          backgroundImage: `url(${BASE_URL}/static/${props.cover})`
         }}
 
       >

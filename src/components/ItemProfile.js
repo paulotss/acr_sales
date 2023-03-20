@@ -1,10 +1,12 @@
 const ItemProfile = (props) => {
+  const BASE_URL = process.env.REACT_APP_API_BASE_URL;
+
   return (
     <div className="flex justify-between items-center w-full p-5 border">
       <div
         className="h-24 w-24 bg-contain bg-center bg-no-repeat"
         style={{
-          backgroundImage: `url('http://localhost:3001/static/${props.cover}')`
+          backgroundImage: `url('${BASE_URL}/static/${props.cover}')`
         }}
       >
       </div>

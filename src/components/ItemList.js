@@ -2,12 +2,15 @@ import { Link } from "react-router-dom";
 
 const ItemList = (props) => {
   const { id, title, price, description, cover } = props;
+
+  const BASE_URL = process.env.REACT_APP_API_BASE_URL;
+
   return (
     <Link to={ `/item/${id}` } className="flex mb-5 flex-row">
       <div
         className="mr-5 w-1/3 h-64 bg-contain bg-center bg-no-repeat"
         style={{
-          backgroundImage: `url(http://localhost:3001/static/${cover})`
+          backgroundImage: `url(${BASE_URL}/static/${cover})`
         }}
       >
       </div>

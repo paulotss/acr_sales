@@ -1,5 +1,5 @@
-import axios from "../../http";
-import { useState } from "react";
+import axios from '../../http';
+import { useEffect, useState } from 'react';
 
 const NewAdvertForm = () => {
   const [advert, setAdvert] = useState({
@@ -13,10 +13,28 @@ const NewAdvertForm = () => {
     depth: "",
     price: "",
     file:"",
-    categoryId: 1
+    categoryId: 1,
   });
 
   const [image, setImage] = useState("");
+
+  const [ isValid, setIsValid ] = useState(false);
+
+  const validateAvertForm = () => {
+    const result = [
+      advert.title !== "",
+      advert.description !== "",
+      advert.cover !== "",
+      Number(advert.amount) > 0,
+      Number(advert.width) > 0,
+      Number(advert.height) > 0,
+      Number(advert.weight) > 0,
+      Number(advert.depth) > 0,
+      advert.price !== "",
+      advert.file !== "",
+    ];
+    return result.every((val) => val);
+  }
 
   const handleChange = ({ target }) => {
     const { name, value } = target;
@@ -26,7 +44,7 @@ const NewAdvertForm = () => {
     });
   }
 
-  const handleChangeFile = async ({ target }) => {
+  const handleChangeFile = ({ target }) => {
     setImage(URL.createObjectURL(target.files[0]));
     setAdvert({
       ...advert,
@@ -41,6 +59,10 @@ const NewAdvertForm = () => {
     });
     if (result.status === 201) console.log("ok!");
   }
+
+  useEffect(() => {
+    setIsValid(validateAvertForm());
+  }, [advert])
 
   return (
     <div>
@@ -74,6 +96,7 @@ const NewAdvertForm = () => {
             type="file"
             name="cover"
             onChange={handleChangeFile}
+            accept="image/png, image/jpeg"
           />
           <img src={image} />
         </div>
@@ -153,8 +176,9 @@ const NewAdvertForm = () => {
 
         <button
           type="button"
-          className="bg-green-900 p-2 w-24 text-white"
+          className="bg-green-900 p-2 w-24 text-white disabled:bg-gray-400"
           onClick={ submitForm }
+          disabled={ !isValid }
         >
           Criar
         </button>
