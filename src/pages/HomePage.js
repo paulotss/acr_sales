@@ -4,13 +4,13 @@ import SearchBar from "../components/SearchBar";
 import Category from "../components/Category";
 import ItemDisplay from "../components/ItemDisplay";
 import Footer from "../components/Footer";
-import { categories } from "../mocks/data";
 import AppContext from "../contexts/AppContext";
 import { useNavigate } from "react-router-dom";
 import axios from "../http";
 
 const HomePage = () => {
   const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
   const { search } = useContext(AppContext);
   const navigate = useNavigate();
 
@@ -19,8 +19,14 @@ const HomePage = () => {
     setProducts(result.data);
   }
 
+  const getCategories = async () => {
+    const result = await axios.get("/categories");
+    setCategories(result.data);
+  }
+
   useEffect(() => {
     getProducts();
+    getCategories();
   }, [])
 
   return (
@@ -51,7 +57,12 @@ const HomePage = () => {
         <article className="flex justify-center mt-10 overflow-x-auto">
           {
             categories.map((category) => (
-              <Category key={ category.id } name={ category.name } id={ category.id } />
+              <Category
+                key={ category.id }
+                title={ category.title }
+                image={ category.image }
+                id={ category.id }
+              />
             ))
           }
         </article>
