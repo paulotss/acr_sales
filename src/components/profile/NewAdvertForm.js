@@ -1,7 +1,10 @@
 import axios from '../../http';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
+import AppContext from '../../contexts/AppContext';
 
-const NewAdvertForm = () => {
+const NewAdvertForm = (props) => {
+  const { setActProfile } = useContext(AppContext);
+
   const [advert, setAdvert] = useState({
     title: "",
     description: "",
@@ -14,11 +17,20 @@ const NewAdvertForm = () => {
     price: "",
     file:"",
     categoryId: 1,
+    userId: props.userId,
   });
-
   const [image, setImage] = useState("");
+  const [isValid, setIsValid] = useState(false);
+  const [categories, setCategories] = useState([]);
 
-  const [ isValid, setIsValid ] = useState(false);
+  const BASE_URL = process.env.REACT_APP_API_BASE_URL;
+
+  const getCategories = async () => {
+    const result = await axios.get(
+      `${BASE_URL}/categories`
+    );
+    setCategories(result.data);
+  }
 
   const validateAvertForm = () => {
     const result = [
@@ -30,7 +42,7 @@ const NewAdvertForm = () => {
       Number(advert.height) > 0,
       Number(advert.weight) > 0,
       Number(advert.depth) > 0,
-      advert.price !== "",
+      Number(advert.price) > 0,
       advert.file !== "",
     ];
     return result.every((val) => val);
@@ -45,24 +57,39 @@ const NewAdvertForm = () => {
   }
 
   const handleChangeFile = ({ target }) => {
-    setImage(URL.createObjectURL(target.files[0]));
-    setAdvert({
-      ...advert,
-      cover: target.files[0].name,
-      file: target.files[0]
-    });
+    const { size, type } = target.files[0];
+    if (size > 50000) {
+      alert("Tamanho máximo: 500Kb.")
+      target.value = "";
+      setImage("");
+    } else if (type.split("/")[0] !== "image") {
+      alert("Somente imagens são permitidas")
+      target.value = "";
+      setImage("");
+    } else {
+      setImage(URL.createObjectURL(target.files[0]));
+      setAdvert({
+        ...advert,
+        cover: target.files[0].name,
+        file: target.files[0]
+      });
+    }
   }
 
   const submitForm = async () => {
     const result = await axios.post('/product', advert, {
       headers: { 'Content-Type': 'multipart/form-data' }
     });
-    if (result.status === 201) console.log("ok!");
+    if (result.status === 201) setActProfile(2);
   }
 
   useEffect(() => {
     setIsValid(validateAvertForm());
-  }, [advert])
+  }, [advert]);
+
+  useEffect(() => {
+    getCategories();
+  }, []);
 
   return (
     <div>
@@ -102,6 +129,24 @@ const NewAdvertForm = () => {
         </div>
 
         <div className="mb-3">
+          <label className="text-green-900">Categoria</label><br/>
+          <select
+            name="categoryId"
+            className="border-2 p-2 w-32"
+            value={ advert.categoryId }
+            onChange={ handleChange }
+          >
+            {
+              categories.map((category) => (
+                <option key={ category.id } value={ category.id }>
+                  { category.title }
+                </option>
+              ))
+            }
+          </select>
+        </div>
+
+        <div className="mb-3">
           <label className="text-green-900">Quantidade</label><br/>
           <input
             type="number"
@@ -109,6 +154,7 @@ const NewAdvertForm = () => {
             name="amount"
             value={advert.amount}
             onChange={handleChange}
+            min="0"
           />
         </div>
 
@@ -121,6 +167,7 @@ const NewAdvertForm = () => {
             name="weight"
             value={advert.weight}
             onChange={handleChange}
+            min="0"
           />
         </div>
 
@@ -134,6 +181,7 @@ const NewAdvertForm = () => {
               name="width"
               value={advert.width}
               onChange={handleChange}
+              min="0"
             />
           </div>
 
@@ -146,6 +194,7 @@ const NewAdvertForm = () => {
               name="height"
               value={advert.height}
               onChange={handleChange}
+              min="0"
             />
           </div>
 
@@ -158,6 +207,7 @@ const NewAdvertForm = () => {
               name="depth"
               value={advert.depth}
               onChange={handleChange}
+              min="0"
             />
           </div>
         </div>
@@ -165,8 +215,8 @@ const NewAdvertForm = () => {
         <div className="mb-5">
           <label className="text-green-900">Preço</label><br/>
           <input
-            type="number"
-            className="border-2 p-2 w-24"
+            type="text"
+            className="border-2 p-2 w-32"
             placeholder="R$"
             name="price"
             value={advert.price}
