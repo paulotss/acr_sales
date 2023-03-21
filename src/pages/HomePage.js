@@ -60,7 +60,7 @@ const HomePage = () => {
               <Category
                 key={ category.id }
                 title={ category.title }
-                image={ category.image }
+                urlImage={ category.image }
                 id={ category.id }
               />
             ))
