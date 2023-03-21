@@ -3,11 +3,11 @@ import { useParams } from "react-router-dom";
 import Footer from "../components/Footer";
 import Head from "../components/Head";
 import ItemList from "../components/ItemList";
-import { categories } from '../mocks/data';
 import axios from "../http";
 
 const SearchCategory = () => {
-  const [ products, setProducts ] = useState([]);
+  const [products, setProducts] = useState([]);
+  const [category, setCategory] = useState("");
   const { id } = useParams();
 
   const getProducts = async () => {
@@ -17,7 +17,7 @@ const SearchCategory = () => {
 
   useEffect(() => {
     getProducts();
-  }, []);
+  }, [products]);
 
   return (
     <main>
@@ -26,7 +26,9 @@ const SearchCategory = () => {
         <h1 className="font-bold text-white text-xl">
           Categoria:
           {' '}
-          <span className="font-bold">{ categories.find((cat) => cat.id === Number(id)).name }</span>
+          <span className="font-bold">
+            { products.length > 0 ? products[0].category.title : "" }
+          </span>
         </h1>
       </section>
       <section className="p-10">
