@@ -9,6 +9,13 @@ const Adverts = () => {
   const [products, setProducts] = useState([]);
   const { setActProfile } = useContext(AppContext);
 
+  const deleteAdvert = async ({ target }) => {
+    await axios.delete(
+      `/product/${target.value}`
+    );
+    getProducts();
+  }
+
   const getProducts = async () => {
     try {
       const result = await axios.get("/user/products", {
@@ -44,6 +51,7 @@ const Adverts = () => {
               id={ product.id }
               title={ product.title }
               cover={ product.cover }
+              deleteAdvert={ deleteAdvert }
             />
           ))
         }

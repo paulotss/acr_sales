@@ -37,11 +37,6 @@ const NewAdvertForm = (props) => {
       advert.title !== "",
       advert.description !== "",
       advert.cover !== "",
-      Number(advert.amount) > 0,
-      Number(advert.width) > 0,
-      Number(advert.height) > 0,
-      Number(advert.weight) > 0,
-      Number(advert.depth) > 0,
       Number(advert.price) > 0,
       advert.file !== "",
     ];

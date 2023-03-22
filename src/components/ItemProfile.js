@@ -1,5 +1,9 @@
+import axios from 'axios';
+
 const ItemProfile = (props) => {
   const BASE_URL = process.env.REACT_APP_API_BASE_URL;
+
+  
 
   return (
     <div className="flex justify-between items-center w-full p-5 border">
@@ -12,7 +16,13 @@ const ItemProfile = (props) => {
       </div>
       <div className="text-left w-full p-2">{ props.title }</div>
       <div className="w-24 text-center color-red">
-        <span className="text-green-900">edit</span> | <span className="text-red-900">del</span>
+        <button
+          className="text-red-900"
+          value={ props.id }
+          onClick={ props.deleteAdvert }
+        >
+          del
+        </button>
       </div>
     </div>
   );
