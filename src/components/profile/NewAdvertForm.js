@@ -44,7 +44,11 @@ const NewAdvertForm = (props) => {
   }
 
   const handleChange = ({ target }) => {
-    const { name, value } = target;
+    let { name, value } = target;
+    if (name === "price") {
+      value = value.replace(/\D/g, "");
+      value = value.replace(/(\d)(\d{2})$/, "$1.$2")
+    }
     setAdvert({
       ...advert,
       [name]: value
@@ -120,7 +124,14 @@ const NewAdvertForm = (props) => {
             onChange={handleChangeFile}
             accept="image/png, image/jpeg"
           />
-          <img src={image} />
+          {
+            image ?
+            <img
+            src={ image }
+            className="w-80 border-2 border-green-900 mt-2"
+            /> :
+            ""
+          }
         </div>
 
         <div className="mb-3">
