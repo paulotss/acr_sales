@@ -68,7 +68,7 @@ const Profile = () => {
             >
               Meus dados
             </li>
-            <li
+            {/* <li
               className={
                 `p-2 border-2 hover:border-green-900 cursor-pointer
                 ${ actProfile === 1 ? 'bg-green-900 text-white border-green-900' : 'border-green-100'}`
@@ -76,7 +76,7 @@ const Profile = () => {
               onClick={ () => { setActProfile(1) }}
             >
               Pedidos
-            </li>
+            </li> */}
             <li
               className={
                 `p-2 border-2 hover:border-green-900 cursor-pointer

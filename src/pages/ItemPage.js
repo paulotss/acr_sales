@@ -37,6 +37,8 @@ const ItemPage = () => {
             amount={ product.amount }
             description={ product.description }
             cover={ product.cover }
+            userName={ `${product.user.firstName} ${product.user.lastName}` }
+            userWhats={ product.user.whatsapp }
           />
         }
       </section>
