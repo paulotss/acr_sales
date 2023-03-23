@@ -46,7 +46,7 @@ const NewUserForm = () => {
       lastName.length > 4,
       emailPattern.test(email),
       (password.length > 5) && (password === confirmPassword),
-      cellPhone.length === 11,
+      cellPhone.length === 14,
       whatsapp.length === 11,
     ];
 
@@ -61,7 +61,7 @@ const NewUserForm = () => {
     } = adressData;
 
     const validation = [
-      cep.length === 8,
+      cep.length === 9,
       city.length > 3,
       adress.length > 3
     ];
@@ -69,7 +69,12 @@ const NewUserForm = () => {
   }
 
   const handleChangeUser = ({ target }) => {
-    const { value, name } = target;
+    let { value, name } = target;
+    switch (name) {
+      case "cellPhone":
+        value = value.replace(/\D/g, "");
+        value = value.replace(/^(\d{2})(\d{5})(\d{4})/, "($1)$2-$3");
+    }
     setUserData({
       ...userData,
       [name]: value,
@@ -77,7 +82,12 @@ const NewUserForm = () => {
   }
 
   const handleChangeAdress = ({ target }) => {
-    const { value, name } = target;
+    let { value, name } = target;
+    switch (name) {
+      case "cep":
+        value = value.replace(/\D/g, "");
+        value = value.replace(/^(\d{5})(\d)/, "$1-$2");
+    }
     setAdressData({
       ...adressData,
       [name]: value,
@@ -149,34 +159,40 @@ const NewUserForm = () => {
           <div className="mb-5">
             <label htmlFor="cellPhone" className="text-green-900">Celular</label>
             <input
-              type="number"
+              type="text"
               name="cellPhone"
               id="cellPhone"
               className="border-2 p-2 w-full"
               onChange={ handleChangeUser }
               value={ userData.cellPhone }
+              placeholder="(61)99999-9999"
+              maxLength={ 14 }
             />
           </div>
           <div className="mb-5">
             <label htmlFor="whatsapp" className="text-green-900">Whatsapp</label>
             <input
-              type="number"
+              type="text"
               name="whatsapp"
               id="whatsapp"
               className="border-2 p-2 w-full"
               onChange={ handleChangeUser }
               value={ userData.whatsapp }
+              placeholder="99999999999"
+              maxLength={ 11 }
             />
           </div>
           <div className="mb-5">
             <label htmlFor="cep" className="text-green-900">CEP</label>
             <input
-              type="number"
+              type="text"
               name="cep"
               id="cep"
               className="border-2 p-2 w-full"
               onChange={ handleChangeAdress }
               value={ adressData.cep }
+              maxLength={ 9 }
+              placeholder="99999-999"
             />
           </div>
           <div className="mb-5">
