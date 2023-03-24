@@ -3,6 +3,8 @@ import Footer from "../components/Footer";
 import Head from "../components/Head";
 import axios from '../http';
 import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 const NewUserForm = () => {
   const navigate = useNavigate();
@@ -102,7 +104,29 @@ const NewUserForm = () => {
       );
       navigate("/login");
     } catch (error) {
-      alert("Houve um problema");
+      if (error.response.status === 409) {
+        toast.error("Email já cadastrado!", {
+          position: "top-left",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+      } else {
+        toast.error("Houve um problema!", {
+          position: "top-left",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        })
+      }
     }
   }
 
@@ -298,6 +322,18 @@ const NewUserForm = () => {
         </article>
       </section>
       <Footer />
+      <ToastContainer
+        position="top-left"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
     </main>
   );
 }
