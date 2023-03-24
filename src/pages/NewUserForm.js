@@ -105,27 +105,9 @@ const NewUserForm = () => {
       navigate("/login");
     } catch (error) {
       if (error.response.status === 409) {
-        toast.error("Email já cadastrado!", {
-          position: "top-left",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        });
+        toast.error("Email já cadastrado!");
       } else {
-        toast.error("Houve um problema!", {
-          position: "top-left",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        })
+        toast.error("Houve um problema!");
       }
     }
   }
@@ -134,7 +116,7 @@ const NewUserForm = () => {
     if(userValidate() && adressValidate()) {
       setIsValid(true);
     }
-  }, [userData, confirmPassword])
+  }, [userData, confirmPassword]);
 
 
   return (

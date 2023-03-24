@@ -1,6 +1,8 @@
 import axios from '../../http';
 import { useEffect, useState, useContext } from 'react';
 import AppContext from '../../contexts/AppContext';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const NewAdvertForm = (props) => {
   const { setActProfile } = useContext(AppContext);
@@ -58,11 +60,11 @@ const NewAdvertForm = (props) => {
   const handleChangeFile = ({ target }) => {
     const { size, type } = target.files[0];
     if (size > 50000) {
-      alert("Tamanho máximo: 500Kb.")
+      toast.error("Tamanho máximo: 500Kb.");
       target.value = "";
       setImage("");
     } else if (type.split("/")[0] !== "image") {
-      alert("Somente imagens são permitidas")
+      toast.error("Somente imagens são permitidas!");
       target.value = "";
       setImage("");
     } else {
@@ -76,10 +78,14 @@ const NewAdvertForm = (props) => {
   }
 
   const submitForm = async () => {
-    const result = await axios.post('/product', advert, {
-      headers: { 'Content-Type': 'multipart/form-data' }
-    });
-    if (result.status === 201) setActProfile(2);
+    try {
+      await axios.post('/product', advert, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      });
+      setActProfile(2);
+    } catch (error) {
+      toast.error("Houve um problema! :(")
+    }
   }
 
   useEffect(() => {
@@ -239,6 +245,18 @@ const NewAdvertForm = (props) => {
           Criar
         </button>
       </form>
+      <ToastContainer
+        position="top-left"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
     </div>
     
   )
