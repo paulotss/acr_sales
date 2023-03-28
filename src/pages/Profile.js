@@ -41,6 +41,7 @@ const Profile = () => {
         );
         setUser(result.data);
       } catch (error) {
+        console.log(error)
         navigate("/login");
       }
     }
