@@ -1,12 +1,23 @@
-import axios from '../http'
+import { useState } from 'react';
+import axios from '../http';
 import whatsappIcon from '../media/whatsapp.png';
 
 const ItemShow = (props) => {
   const { title, price, description, cover } = props;
   const BASE_URL = process.env.REACT_APP_API_BASE_URL;
+  const [qrCode, setQrCode] = useState("");
 
-  const getUser = async () => {
-
+  const getPix = async () => {
+    const authorization = sessionStorage.getItem('auth');
+    if (authorization) {
+      const result = await axios.get(
+        `/sales/genpix/${props.userId}`,
+        {
+          headers: { 'authorization': authorization }
+        }
+      );
+      setQrCode(result.data.qr_codes[0].links[0].href);
+    }
   }
 
   return (
@@ -42,6 +53,20 @@ const ItemShow = (props) => {
               (61) { props.userWhats }
             </a>
           </div>
+          {
+            !qrCode ?
+            <button
+            type='button'
+            className="bg-green-900 p-2 w-24 text-white disabled:bg-gray-400 mt-3"
+            onClick={ getPix }
+            >
+              Gerar pix
+            </button> :
+            <img
+              src={ qrCode }
+              className="w-64 mt-3"
+            />
+          }
         </div>
       </div>
     </article>
