@@ -1,27 +1,37 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import axios from "../../http";
 
-const Address = () => {
-  const [ adressData, setAdressData ] = useState({
-    cep: "",
-    state: "DF",
-    country: "Brasil",
-    city: "",
-    complement: "",
-    adress: "",
-    userId: "",
+const Address = (props) => {
+  const [ addressData, setAddressData ] = useState({
+    cep: props.data.cep,
+    state: props.data.state,
+    country: props.data.country,
+    city: props.data.city,
+    complement: props.data.complement,
+    number: props.data.number,
+    street: props.data.street,
+    locality: props.data.locality,
+    userId: props.data.userId,
   });
+  const [isValid, setIsValid] = useState(false);
+  const BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
   const adressValidate = () => {
     const {
       cep,
       city,
-      adress,
-    } = adressData;
+      number,
+      street,
+      locality
+    } = addressData;
 
     const validation = [
       cep.length === 9,
       city.length > 3,
-      adress.length > 3
+      Number(number) > 0,
+      street.length > 3,
+      locality.length > 3
     ];
     return validation.every((val) => val);
   }
@@ -33,11 +43,34 @@ const Address = () => {
         value = value.replace(/\D/g, "");
         value = value.replace(/^(\d{5})(\d)/, "$1-$2");
     }
-    setAdressData({
-      ...adressData,
+    setAddressData({
+      ...addressData,
       [name]: value,
     },);
   }
+
+  const handleSubmit = async () => {
+      try {
+        if (props.data.cep) {
+          await axios.put(
+            `${BASE_URL}/address/${addressData.userId}`,
+            addressData
+          );
+        } else {
+          await axios.post(
+            `${BASE_URL}/address`,
+            addressData
+          );
+        }
+        toast.success("Atualizado!");
+      } catch (error) {
+        toast.error("Houve um problema!");
+      }
+  }
+
+  useEffect(() => {
+    setIsValid(adressValidate());
+  }, [addressData]);
 
   return (
     <form>
@@ -49,7 +82,7 @@ const Address = () => {
             id="cep"
             className="border-2 p-2 w-full"
             onChange={ handleChangeAdress }
-            value={ adressData.cep }
+            value={ addressData.cep }
             maxLength={ 9 }
             placeholder="99999-999"
           />
@@ -61,7 +94,7 @@ const Address = () => {
             id="state"
             className="border-2 p-2 w-full"
             onChange={ handleChangeAdress }
-            value={ adressData.state }
+            value={ addressData.state }
           >
             <option value="AC">Acre</option>
             <option value="AL">Alagoas</option>
@@ -99,18 +132,41 @@ const Address = () => {
             id="city"
             className="border-2 p-2 w-full"
             onChange={ handleChangeAdress }
-            value={ adressData.city }
+            value={ addressData.city }
           />
         </div>
         <div className="mb-5">
-          <label htmlFor="adress" className="text-green-900">Endereço</label>
+          <label htmlFor="number" className="text-green-900">Número</label>
           <input
-            type="text"
-            name="adress"
-            id="adress"
+            type="number"
+            name="number"
+            id="number"
             className="border-2 p-2 w-full"
             onChange={ handleChangeAdress }
-            value={ adressData.adress }
+            value={ addressData.number }
+            min="0"
+          />
+        </div>
+        <div className="mb-5">
+          <label htmlFor="adress" className="text-green-900">Localidade</label>
+          <input
+            type="text"
+            name="locality"
+            id="locality"
+            className="border-2 p-2 w-full"
+            onChange={ handleChangeAdress }
+            value={ addressData.locality }
+          />
+        </div>
+        <div className="mb-5">
+          <label htmlFor="adress" className="text-green-900">Logradouro</label>
+          <input
+            type="text"
+            name="street"
+            id="street"
+            className="border-2 p-2 w-full"
+            onChange={ handleChangeAdress }
+            value={ addressData.street }
           />
         </div>
         <div className="mb-5">
@@ -121,9 +177,29 @@ const Address = () => {
             id="complement"
             className="border-2 p-2 w-full"
             onChange={ handleChangeAdress }
-            value={ adressData.complement }
+            value={ addressData.complement }
           />
         </div>
+        <button
+          type="button"
+          disabled={ !isValid }
+          onClick={ handleSubmit }
+          className="bg-green-900 p-2 w-24 text-white disabled:bg-gray-400"
+        >
+          Atualizar
+        </button>
+        <ToastContainer
+          position="top-left"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="colored"
+        />
     </form>
   )
 }

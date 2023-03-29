@@ -21,7 +21,9 @@ const Profile = () => {
       cellPhone={ user.cellPhone }
       whatsapp={ user.whatsapp }
     />,
-    <Address />,
+    <Address
+      data={ user.address }
+    />,
     <Adverts />,
     <NewAdvertForm
       userId={ user.id }
