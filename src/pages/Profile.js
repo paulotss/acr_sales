@@ -7,6 +7,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import AppContext from "../contexts/AppContext";
 import axios from "../http";
 import Address from "../components/profile/Address";
+import Requests from "../components/profile/Requests";
 
 const Profile = () => {
   const { id } = useParams();
@@ -27,7 +28,10 @@ const Profile = () => {
     <Adverts />,
     <NewAdvertForm
       userId={ user.id }
-    />
+    />,
+    <Requests
+      userId={  user.id }
+    />,
   ];
 
   const { actProfile, setActProfile } = useContext(AppContext);
@@ -87,6 +91,24 @@ const Profile = () => {
               onClick={ () => { setActProfile(2) }}
             >
               Anúncios
+            </li>
+            <li
+              className={
+                `p-2 border-2 hover:border-green-900 cursor-pointer
+                ${ actProfile === 2 || actProfile === 3 ? 'bg-green-900 text-white border-green-900' : 'border-green-100'}`
+              }
+              onClick={ () => { setActProfile(4) }}
+            >
+              Pedidos
+            </li>
+            <li
+              className={
+                `p-2 border-2 hover:border-green-900 cursor-pointer
+                ${ actProfile === 2 || actProfile === 3 ? 'bg-green-900 text-white border-green-900' : 'border-green-100'}`
+              }
+              onClick={ () => { setActProfile(5) }}
+            >
+              Vendas
             </li>
           </ul>
         </article>

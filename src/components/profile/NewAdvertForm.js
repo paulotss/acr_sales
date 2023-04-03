@@ -79,7 +79,7 @@ const NewAdvertForm = (props) => {
 
   const submitForm = async () => {
     try {
-      await axios.post('/product', advert, {
+      const result = await axios.post('/product', advert, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
       setActProfile(2);
