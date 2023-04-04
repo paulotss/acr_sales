@@ -59,8 +59,8 @@ const NewAdvertForm = (props) => {
 
   const handleChangeFile = ({ target }) => {
     const { size, type } = target.files[0];
-    if (size > 50000) {
-      toast.error("Tamanho máximo: 500Kb.");
+    if (size > 100000) {
+      toast.error("Tamanho máximo: 1MB.");
       target.value = "";
       setImage("");
     } else if (type.split("/")[0] !== "image") {

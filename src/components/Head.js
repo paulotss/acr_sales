@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import logo from "../media/logo.png"
 
 const Head = () => {
   const navigate = useNavigate();
@@ -19,8 +20,10 @@ const Head = () => {
   return (
     <section className="flex justify-between w-full p-4">
       <div className="flex">
-        <Link to="/" className="w-10 h-10 bg-green-900"></Link>
-        <h1 className="ml-2 font-bold text-2xl text-green-900">Acrópole</h1>
+        <Link to="/" className="w-10 h-10">
+          <img src={ logo } />
+        </Link>
+        <h1 className="ml-2 font-bold text-2xl text-green-900 leading-normal">Tebas</h1>
       </div>
 
       <div className="flex">
