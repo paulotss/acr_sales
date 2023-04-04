@@ -14,7 +14,7 @@ const ItemShow = (props) => {
       <div
         className="shrink-0 h-96 w-96 m-2 bg-contain bg-center bg-no-repeat"
         style={{
-          backgroundImage: `url(${BASE_URL}/static/${cover})`
+          backgroundImage: `url("https://tebas-bucket.s3.sa-east-1.amazonaws.com/${cover}")`
         }}
       >
       </div>

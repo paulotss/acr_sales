@@ -10,7 +10,7 @@ const ItemProfile = (props) => {
       <div
         className="h-24 w-24 bg-contain bg-center bg-no-repeat"
         style={{
-          backgroundImage: `url('${BASE_URL}/static/${props.cover}')`
+          backgroundImage: `url("https://tebas-bucket.s3.sa-east-1.amazonaws.com/${props.cover}")`
         }}
       >
       </div>
