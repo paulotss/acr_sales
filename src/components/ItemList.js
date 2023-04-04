@@ -10,7 +10,7 @@ const ItemList = (props) => {
       <div
         className="mr-5 w-1/3 h-64 bg-contain bg-center bg-no-repeat"
         style={{
-          backgroundImage: `url(${BASE_URL}/static/${cover})`
+          backgroundImage: `url("https://tebas-bucket.s3.sa-east-1.amazonaws.com/${cover}")`
         }}
       >
       </div>

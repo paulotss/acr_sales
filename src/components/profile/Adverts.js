@@ -10,9 +10,10 @@ const Adverts = () => {
   const { setActProfile } = useContext(AppContext);
 
   const deleteAdvert = async ({ target }) => {
-    await axios.delete(
+    const result = await axios.delete(
       `/product/${target.value}`
     );
+    console.log(result.data);
     getProducts();
   }
 
