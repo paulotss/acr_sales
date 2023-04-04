@@ -10,13 +10,14 @@ const ItemShow = (props) => {
   }
 
   return (
-    <article className="flex justify-center">
+    <article className="flex justify-left">
       <div
-        className="shrink-0 h-96 w-96 m-2 bg-contain bg-center bg-no-repeat"
-        style={{
-          backgroundImage: `url("https://tebas-bucket.s3.sa-east-1.amazonaws.com/${cover}")`
-        }}
+        className="shrink-0 m-2"
       >
+        <img
+          src={ `https://tebas-bucket.s3.sa-east-1.amazonaws.com/${cover}` }
+          className="max-h-md max-w-md"
+        />
       </div>
       <div>
         <p className="mb-3 text-2xl font-bold text-green-900">

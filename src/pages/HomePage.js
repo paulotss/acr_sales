@@ -66,7 +66,7 @@ const HomePage = () => {
             ))
           }
         </article>
-        <article className="flex flex-wrap bg-white p-10 mt-10">
+        <article className="flex flex-wrap bg-white p-10 mt-10 justify-between">
           {
             products.map((product) => (
               <ItemDisplay
