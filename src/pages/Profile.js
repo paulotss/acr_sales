@@ -50,7 +50,7 @@ const Profile = () => {
         navigate("/login");
       }
     }
-    setActProfile(Number(id))
+    setActProfile(Number(id));
     getUser();
   }, []);
 
@@ -95,7 +95,7 @@ const Profile = () => {
             <li
               className={
                 `p-2 border-2 hover:border-green-900 cursor-pointer
-                ${ actProfile === 2 || actProfile === 3 ? 'bg-green-900 text-white border-green-900' : 'border-green-100'}`
+                ${ actProfile === 4 ? 'bg-green-900 text-white border-green-900' : 'border-green-100'}`
               }
               onClick={ () => { setActProfile(4) }}
             >
@@ -104,7 +104,7 @@ const Profile = () => {
             <li
               className={
                 `p-2 border-2 hover:border-green-900 cursor-pointer
-                ${ actProfile === 2 || actProfile === 3 ? 'bg-green-900 text-white border-green-900' : 'border-green-100'}`
+                ${ actProfile === 5 ? 'bg-green-900 text-white border-green-900' : 'border-green-100'}`
               }
               onClick={ () => { setActProfile(5) }}
             >
