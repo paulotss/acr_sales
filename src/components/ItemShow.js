@@ -5,11 +5,25 @@ import { ToastContainer, toast } from "react-toastify";
 import whatsappIcon from '../media/whatsapp.png';
 
 const ItemShow = (props) => {
-  const { title, price, description, cover } = props;
+  const { productId, title, price, description, cover } = props;
   const BASE_URL = process.env.REACT_APP_API_BASE_URL;
   const [pixOrder, setPixOrder] = useState({});
   const [statusPix, setStatusPix] = useState(false);
   const navigate = useNavigate();
+
+  const getUser = async () => {
+    try {
+      const result = await axios.get(
+        "/user",
+        {
+          headers: { "authorization": sessionStorage.getItem("auth") }
+        }
+      );
+      return result.data;
+    } catch (error) {
+      navigate("/login");
+    }
+  }
 
   const getPix = async () => {
     const authorization = sessionStorage.getItem('auth');
@@ -44,9 +58,17 @@ const ItemShow = (props) => {
         );
         const { status } = result.data.charges[0];
         if (status && status === "PAID"){
-          generateRequest();
-          setStatusPix(true);
-          toast.success("Pagamento realizado!")
+          try {
+            const user = await getUser()
+            await axios.post(
+              '/sales',
+              { userId: user.id, productId: productId }
+            );
+            setStatusPix(true);
+            toast.success("Pagamento realizado!")
+          } catch (error) {
+            toast.error("Houve um erro!");
+          }
         } else {
           toast.error("Houve um erro!");
         }
@@ -56,25 +78,6 @@ const ItemShow = (props) => {
         console.log(pixOrder.id);
         console.log(error);
       }
-    }
-  }
-
-  const generateRequest = async () => {
-    const authorization = sessionStorage.getItem('auth');
-    try{
-      const user = await axios.get(
-        '/user',
-        {
-          headers: { 'authorization': authorization }
-        }
-      );
-      const result = await axios.post(
-        '/request',
-        { userId: user.data.id, productId: props.productId }
-      );
-      console.log(result);
-    } catch (error) {
-      console.log(error)
     }
   }
 
