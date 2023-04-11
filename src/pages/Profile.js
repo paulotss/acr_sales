@@ -8,6 +8,7 @@ import AppContext from "../contexts/AppContext";
 import axios from "../http";
 import Address from "../components/profile/Address";
 import Requests from "../components/profile/Requests";
+import Sales from "../components/profile/Sales";
 
 const Profile = () => {
   const { id } = useParams();
@@ -30,8 +31,11 @@ const Profile = () => {
       userId={ user.id }
     />,
     <Requests
-      userId={  user.id }
+      userId={ user.id }
     />,
+    <Sales
+      userId={ user.id }
+    />
   ];
 
   const { actProfile, setActProfile } = useContext(AppContext);

@@ -8,7 +8,7 @@ const Requests = (props) => {
   const getRequest = async () => {
     try {
       const result = await axios.get(
-        `/request/${props.userId}`
+        `/sale/${props.userId}`
       );
       setRequests(result.data);
       console.log(result.data);
@@ -28,7 +28,7 @@ const Requests = (props) => {
         {
           requests.map((request) => (
             <ItemRequest
-              key={request.productId}
+              key={request.id}
               data={ request.products }
             />
           ))
