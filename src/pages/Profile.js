@@ -1,12 +1,12 @@
 import { useContext, useEffect, useState } from "react";
 import Head from "../components/Head";
 import PersonalData from "../components/profile/PersonalData";
-import Requests from "../components/profile/Requests";
 import Adverts from "../components/profile/Adverts";
 import NewAdvertForm from "../components/profile/NewAdvertForm";
 import { useParams, useNavigate } from "react-router-dom";
 import AppContext from "../contexts/AppContext";
 import axios from "../http";
+import Address from "../components/profile/Address";
 
 const Profile = () => {
   const { id } = useParams();
@@ -21,7 +21,9 @@ const Profile = () => {
       cellPhone={ user.cellPhone }
       whatsapp={ user.whatsapp }
     />,
-    <Requests />,
+    <Address
+      data={ user.address }
+    />,
     <Adverts />,
     <NewAdvertForm
       userId={ user.id }
@@ -68,15 +70,15 @@ const Profile = () => {
             >
               Meus dados
             </li>
-            {/* <li
+            <li
               className={
                 `p-2 border-2 hover:border-green-900 cursor-pointer
                 ${ actProfile === 1 ? 'bg-green-900 text-white border-green-900' : 'border-green-100'}`
               }
               onClick={ () => { setActProfile(1) }}
             >
-              Pedidos
-            </li> */}
+              Endereço
+            </li>
             <li
               className={
                 `p-2 border-2 hover:border-green-900 cursor-pointer

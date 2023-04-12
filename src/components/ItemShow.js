@@ -1,12 +1,49 @@
-import axios from '../http'
+import { useState } from 'react';
+import axios from '../http';
 import whatsappIcon from '../media/whatsapp.png';
 
 const ItemShow = (props) => {
   const { title, price, description, cover } = props;
   const BASE_URL = process.env.REACT_APP_API_BASE_URL;
+  const [pixOrder, setPixOrder] = useState({});
+  const [statusPix, setStatusPix] = useState({});
 
-  const getUser = async () => {
+  const getPix = async () => {
+    const authorization = sessionStorage.getItem('auth');
+    if (authorization) {
+      try {
+        const result = await axios.get(
+          `/sales/genpix/${props.userId}`,
+          {
+            headers: { 'authorization': authorization }
+          }
+        );
+        setPixOrder(result.data);
+        console.log(result.data)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+  }
 
+  const getStatusPix = async () => {
+    const authorization = sessionStorage.getItem('auth');
+    if (authorization) {
+      try {
+        const result = await axios.post(
+          `/sales/statuspix`,
+          { pixOrderId: pixOrder.id },
+          {
+            headers: { 'authorization': authorization }
+          }
+        );
+        const { status } = result.data.charges[0];
+        console.log(status);
+      } catch (error) {
+        console.log(pixOrder.id);
+        console.log(error);
+      }
+    }
   }
 
   return (
@@ -43,6 +80,29 @@ const ItemShow = (props) => {
               (61) { props.userWhats }
             </a>
           </div>
+          {
+            Object.keys(pixOrder).length === 0 ?
+            <button
+            type='button'
+            className="bg-green-900 p-2 w-24 text-white mt-3"
+            onClick={ getPix }
+            >
+              Gerar pix
+            </button> :
+            <div>
+              <img
+                src={ pixOrder.qr_codes[0].links[0].href }
+                className="w-64 mt-3"
+              />
+              <button
+                type='button'
+                className="bg-green-900 p-2 w-64 text-white"
+                onClick={ getStatusPix }
+              >
+                Confirmar pagamento
+              </button>
+            </div>
+          }
         </div>
       </div>
     </article>
