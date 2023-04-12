@@ -3,12 +3,14 @@ import { useNavigate } from 'react-router-dom';
 import axios from '../http';
 import { ToastContainer, toast } from "react-toastify";
 import whatsappIcon from '../media/whatsapp.png';
+import loadingGif from '../media/rolling.gif';
 
 const ItemShow = (props) => {
   const { productId, title, price, description, cover } = props;
   const BASE_URL = process.env.REACT_APP_API_BASE_URL;
   const [pixOrder, setPixOrder] = useState({});
   const [statusPix, setStatusPix] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   const getUser = async () => {
@@ -28,6 +30,7 @@ const ItemShow = (props) => {
   const getPix = async () => {
     const authorization = sessionStorage.getItem('auth');
     if (authorization) {
+      setIsLoading(true);
       try {
         const result = await axios.get(
           `/sales/genpix/${props.userId}`,
@@ -40,6 +43,7 @@ const ItemShow = (props) => {
       } catch (error) {
         console.log(error)
       }
+      setIsLoading(false);
     } else {
       navigate('/login');
     }
@@ -48,6 +52,7 @@ const ItemShow = (props) => {
   const getStatusPix = async () => {
     const authorization = sessionStorage.getItem('auth');
     if (authorization) {
+      setIsLoading(true);
       try {
         const result = await axios.post(
           `/sales/statuspix`,
@@ -78,6 +83,7 @@ const ItemShow = (props) => {
         console.log(pixOrder.id);
         console.log(error);
       }
+      setIsLoading(false);
     }
   }
 
@@ -117,11 +123,16 @@ const ItemShow = (props) => {
           {
             Object.keys(pixOrder).length === 0 ?
             <button
-            type='button'
-            className="bg-green-900 p-2 w-24 text-white mt-3"
-            onClick={ getPix }
+              type='button'
+              className="bg-green-900 p-2 w-24 text-white mt-3 disabled:bg-gray-400"
+              onClick={ getPix }
+              disabled={ isLoading }
             >
-              Gerar pix
+              {
+                !isLoading ?
+                  'Gerar Pix' :
+                  <img src={ loadingGif } className="w-5 ml-8 text-center" />
+              }
             </button> :
             <div>
               {
@@ -133,10 +144,15 @@ const ItemShow = (props) => {
                   />
                   <button
                     type='button'
-                    className="bg-green-900 p-2 w-64 text-white"
+                    className="bg-green-900 p-2 w-64 text-white disabled:bg-gray-400"
                     onClick={ getStatusPix }
+                    disabled={ isLoading }
                   >
-                    Confirmar pagamento
+                    {
+                      !isLoading ?
+                        'Confirmar pagamento' :
+                        <img src={ loadingGif } className="w-5 ml-28 text-center" />
+                    }
                   </button>
                 </> :
                 <p className='text-green-900 mt-3'>
