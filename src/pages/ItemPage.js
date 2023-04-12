@@ -32,7 +32,8 @@ const ItemPage = () => {
         {
           Object.values(product).length > 0 &&
           <ItemShow
-            userId={ product.id }
+            userId={ product.user.id }
+            productId={ product.id }
             title={ product.title }
             price={ product.price }
             amount={ product.amount }

@@ -7,6 +7,9 @@ import { useParams, useNavigate } from "react-router-dom";
 import AppContext from "../contexts/AppContext";
 import axios from "../http";
 import Address from "../components/profile/Address";
+import Requests from "../components/profile/Requests";
+import Sales from "../components/profile/Sales";
+import ShowSale from "../components/profile/ShowSale";
 
 const Profile = () => {
   const { id } = useParams();
@@ -27,7 +30,14 @@ const Profile = () => {
     <Adverts />,
     <NewAdvertForm
       userId={ user.id }
-    />
+    />,
+    <Requests
+      userId={ user.id }
+    />,
+    <Sales
+      userId={ user.id }
+    />,
+    <ShowSale />
   ];
 
   const { actProfile, setActProfile } = useContext(AppContext);
@@ -46,7 +56,7 @@ const Profile = () => {
         navigate("/login");
       }
     }
-    setActProfile(Number(id))
+    setActProfile(Number(id));
     getUser();
   }, []);
 
@@ -87,6 +97,24 @@ const Profile = () => {
               onClick={ () => { setActProfile(2) }}
             >
               Anúncios
+            </li>
+            <li
+              className={
+                `p-2 border-2 hover:border-green-900 cursor-pointer
+                ${ actProfile === 4 ? 'bg-green-900 text-white border-green-900' : 'border-green-100'}`
+              }
+              onClick={ () => { setActProfile(4) }}
+            >
+              Pedidos
+            </li>
+            <li
+              className={
+                `p-2 border-2 hover:border-green-900 cursor-pointer
+                ${ actProfile === 5 ? 'bg-green-900 text-white border-green-900' : 'border-green-100'}`
+              }
+              onClick={ () => { setActProfile(5) }}
+            >
+              Vendas
             </li>
           </ul>
         </article>

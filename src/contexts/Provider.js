@@ -8,12 +8,15 @@ const Provider = ({ children }) => {
   });
 
   const [actProfile, setActProfile] = useState(0);
+  const [saleData, setSaleData] = useState();
 
   const contextValue = {
     search,
     setSearch,
     actProfile,
-    setActProfile
+    setActProfile,
+    saleData,
+    setSaleData
   }
 
   return (
