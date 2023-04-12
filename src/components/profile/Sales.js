@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import ItemRequest from "../ItemRequest"
+import ItemSale from "../ItemSale"
 import axios from "../../http"
 
 const Sales = (props) => {
@@ -22,13 +22,14 @@ const Sales = (props) => {
   }, []);
   return (
     <>
-      <h1 className="text-green-900 font-bold text-2xl">Pedidos</h1>
+      <h1 className="text-green-900 font-bold text-2xl">Vendas</h1>
       <section className="mt-3">
         {
           sales.map((sale) => (
-            <ItemRequest
+            <ItemSale
               key={ sale.id }
               data={ sale.products }
+              saleId={ sale.id }
             />
           ))
         }

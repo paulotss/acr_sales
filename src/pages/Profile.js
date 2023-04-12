@@ -9,6 +9,7 @@ import axios from "../http";
 import Address from "../components/profile/Address";
 import Requests from "../components/profile/Requests";
 import Sales from "../components/profile/Sales";
+import ShowSale from "../components/profile/ShowSale";
 
 const Profile = () => {
   const { id } = useParams();
@@ -35,7 +36,8 @@ const Profile = () => {
     />,
     <Sales
       userId={ user.id }
-    />
+    />,
+    <ShowSale />
   ];
 
   const { actProfile, setActProfile } = useContext(AppContext);
