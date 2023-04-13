@@ -14,8 +14,9 @@ const NewUserForm = () => {
     lastName: "",
     email: "",
     password: "",
-    cellPhone: "",
-    whatsapp: "",
+    cpf: "",
+    area: "",
+    number: "",
   });
 
   const [ confirmPassword, setConfirmPassword ] = useState("")
@@ -28,8 +29,9 @@ const NewUserForm = () => {
       lastName,
       email,
       password,
-      cellPhone,
-      whatsapp,
+      cpf,
+      area,
+      number
     } = userData;
 
     const emailPattern = /^((?!\.)[\w-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/igm
@@ -38,8 +40,9 @@ const NewUserForm = () => {
       lastName.length > 4,
       emailPattern.test(email),
       (password.length > 5) && (password === confirmPassword),
-      cellPhone.length === 14,
-      whatsapp.length === 11,
+      cpf.length === 11,
+      area.length === 2,
+      number.length === 9
     ];
 
     return validation.every((val) => val);
@@ -48,9 +51,12 @@ const NewUserForm = () => {
   const handleChangeUser = ({ target }) => {
     let { value, name } = target;
     switch (name) {
-      case "cellPhone":
+      case "cpf":
         value = value.replace(/\D/g, "");
-        value = value.replace(/^(\d{2})(\d{5})(\d{4})/, "($1)$2-$3");
+      case "area":
+        value = value.replace(/\D/g, "");
+      case "number":
+        value = value.replace(/\D/g, "");
     }
     setUserData({
       ...userData,
@@ -59,8 +65,9 @@ const NewUserForm = () => {
   }
 
   const submitForm = async () => {
+
     try {
-      const result = await axios.post(
+      await axios.post(
         "/user/create",
         userData
       );
@@ -125,29 +132,39 @@ const NewUserForm = () => {
             />
           </div>
           <div className="mb-5">
-            <label htmlFor="cellPhone" className="text-green-900">Celular</label>
+            <label htmlFor="email" className="text-green-900">CPF</label>
             <input
               type="text"
-              name="cellPhone"
-              id="cellPhone"
+              name="cpf"
+              id="cpf"
               className="border-2 p-2 w-full"
               onChange={ handleChangeUser }
-              value={ userData.cellPhone }
-              placeholder="(61)99999-9999"
-              maxLength={ 14 }
+              value={ userData.cpf }
+              maxLength={ 11 }
             />
           </div>
           <div className="mb-5">
-            <label htmlFor="whatsapp" className="text-green-900">Whatsapp</label>
+            <label className="text-green-900">Celular</label>
+            <br/>
             <input
               type="text"
-              name="whatsapp"
-              id="whatsapp"
-              className="border-2 p-2 w-full"
+              name="area"
+              id="area"
+              className="border-2 p-2 w-10 mr-2"
               onChange={ handleChangeUser }
-              value={ userData.whatsapp }
-              placeholder="99999999999"
-              maxLength={ 11 }
+              value={ userData.area }
+              placeholder="99"
+              maxLength={ 2 }
+            />
+            <input
+              type="text"
+              name="number"
+              id="number"
+              className="border-2 p-2 w-64"
+              onChange={ handleChangeUser }
+              value={ userData.number }
+              placeholder="999999999"
+              maxLength={ 9 }
             />
           </div>
           <div className="mb-5">
