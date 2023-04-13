@@ -6,7 +6,6 @@ import NewAdvertForm from "../components/profile/NewAdvertForm";
 import { useParams, useNavigate } from "react-router-dom";
 import AppContext from "../contexts/AppContext";
 import axios from "../http";
-import Address from "../components/profile/Address";
 import Requests from "../components/profile/Requests";
 import Sales from "../components/profile/Sales";
 import ShowSale from "../components/profile/ShowSale";
@@ -46,9 +45,6 @@ const Profile = () => {
       lastName={ user.lastName }
       email={ user.email }
       cellPhone={ `(${user.phones.area}) ${user.phones.number}` }
-    />,
-    <Address
-      address={ user.address }
     />,
     <Adverts />,
     <NewAdvertForm
@@ -106,20 +102,20 @@ const Profile = () => {
             <li
               className={
                 `p-2 border-2 hover:border-green-900 cursor-pointer
-                ${ actProfile === 1 ? 'bg-green-900 text-white border-green-900' : 'border-green-100'}`
+                ${ actProfile === 1 || actProfile === 2 ? 'bg-green-900 text-white border-green-900' : 'border-green-100'}`
               }
               onClick={ () => { setActProfile(1) }}
             >
-              Endereço
+              Anúncios
             </li>
             <li
               className={
                 `p-2 border-2 hover:border-green-900 cursor-pointer
-                ${ actProfile === 2 || actProfile === 3 ? 'bg-green-900 text-white border-green-900' : 'border-green-100'}`
+                ${ actProfile === 3 ? 'bg-green-900 text-white border-green-900' : 'border-green-100'}`
               }
-              onClick={ () => { setActProfile(2) }}
+              onClick={ () => { setActProfile(3) }}
             >
-              Anúncios
+              Pedidos
             </li>
             <li
               className={
@@ -127,15 +123,6 @@ const Profile = () => {
                 ${ actProfile === 4 ? 'bg-green-900 text-white border-green-900' : 'border-green-100'}`
               }
               onClick={ () => { setActProfile(4) }}
-            >
-              Pedidos
-            </li>
-            <li
-              className={
-                `p-2 border-2 hover:border-green-900 cursor-pointer
-                ${ actProfile === 5 ? 'bg-green-900 text-white border-green-900' : 'border-green-100'}`
-              }
-              onClick={ () => { setActProfile(5) }}
             >
               Vendas
             </li>
