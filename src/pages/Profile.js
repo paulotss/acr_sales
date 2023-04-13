@@ -14,18 +14,41 @@ import ShowSale from "../components/profile/ShowSale";
 const Profile = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState({
+    "id": "",
+    "firstName": "",
+    "lastName": "",
+    "email": "",
+    "cpf": "",
+    "address": {
+      "id": "",
+      "cep": "",
+      "state": "",
+      "country": "",
+      "city": "",
+      "complement": "",
+      "street": "",
+      "locality": "",
+      "userId": ""
+    },
+    "phones": {
+      "id": "",
+      "area": "",
+      "number": "",
+      "type": "",
+      "userId": ""
+    }
+  });
 
   const pages = [
     <PersonalData
       firstName={ user.firstName }
       lastName={ user.lastName }
       email={ user.email }
-      cellPhone={ user.cellPhone }
-      whatsapp={ user.whatsapp }
+      cellPhone={ `(${user.phones.area}) ${user.phones.number}` }
     />,
     <Address
-      data={ user.address }
+      address={ user.address }
     />,
     <Adverts />,
     <NewAdvertForm

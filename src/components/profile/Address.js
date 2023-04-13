@@ -4,15 +4,15 @@ import axios from "../../http";
 
 const Address = (props) => {
   const [ addressData, setAddressData ] = useState({
-    cep: props.data.cep,
-    state: props.data.state,
-    country: props.data.country,
-    city: props.data.city,
-    complement: props.data.complement,
-    number: props.data.number,
-    street: props.data.street,
-    locality: props.data.locality,
-    userId: props.data.userId,
+    cep: "",
+    state:"",
+    country: "",
+    city: "",
+    complement: "",
+    number: "",
+    street: "",
+    locality: "",
+    userId: "",
   });
   const [isValid, setIsValid] = useState(false);
   const BASE_URL = process.env.REACT_APP_API_BASE_URL;
@@ -71,6 +71,12 @@ const Address = (props) => {
   useEffect(() => {
     setIsValid(adressValidate());
   }, [addressData]);
+
+  useEffect(() => {
+    if (props.address) {
+      setAddressData(props.address);
+    }
+  }, [])
 
   return (
     <form>
