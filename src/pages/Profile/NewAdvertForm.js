@@ -9,7 +9,6 @@ import { ToastContainer, toast } from 'react-toastify';
 
 const NewAdvertForm = () => {
   const BASE_URL = process.env.REACT_APP_API_BASE_URL;
-  const { user } = useGetLoggedUser();
   const navigate = useNavigate();
   const [advert, setAdvert] = useState({
     title: "",
@@ -80,10 +79,18 @@ const NewAdvertForm = () => {
 
   const submitForm = async () => {
     try {
-      await axios.post('/product', { ...advert, userId: user.id }, {
-        headers: { 'Content-Type': 'multipart/form-data' }
-      });
-      navigate("/profile/adverts");
+      const auth = sessionStorage.getItem("auth");
+      if (auth) {
+        await axios.post('/product', advert, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            'authorization': auth
+          }
+        });
+        navigate("/profile/adverts");
+      } else {
+        navigate("/login");
+      }
     } catch (error) {
       toast.error("Houve um problema! :(")
     }
