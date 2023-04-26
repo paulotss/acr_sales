@@ -8,6 +8,7 @@ import NewUserForm from './pages/NewUserForm';
 import ProfilePersonalData from './pages/Profile/ProfilePersonalData';
 import Adverts from './pages/Profile/Adverts';
 import NewAdvertForm from './pages/Profile/NewAdvertForm';
+import Requests from './pages/Profile/Requests';
 
 const App = () => {
   return (
@@ -19,6 +20,7 @@ const App = () => {
         <Route path='/profile' element={ <ProfilePersonalData /> } />
         <Route path='/profile/adverts' element={ <Adverts /> } />
         <Route path='/profile/adverts/create' element={ <NewAdvertForm /> } />
+        <Route path='/profile/requests' element={ <Requests /> } />
         <Route path='/login' element={ <Login /> } />
         <Route path='/register' element={ <NewUserForm /> } />
         <Route path='/' element={ <HomePage /> }  />
