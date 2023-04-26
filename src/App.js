@@ -5,7 +5,7 @@ import SearchCategory from './pages/SearchCategory';
 import ItemPage from './pages/ItemPage';
 import Login from './pages/Login';
 import NewUserForm from './pages/NewUserForm';
-import ProfilePersonalData from './pages/ProfilePersonalData';
+import ProfilePersonalData from './pages/Profile/ProfilePersonalData';
 
 const App = () => {
   return (
