@@ -3,6 +3,7 @@ import HeadTitle from '../../components/HeadTitle';
 import ProfileMenu from '../../components/profile/ProfileMenu';
 import ItemProfile from '../../components/ItemProfile';
 import useGetLoggedUserProducts from '../../hooks/useGetLoggedUserProducts';
+import { Link } from 'react-router-dom';
 
 const Adverts = () => {
   const { adverts, deleteAdvert } = useGetLoggedUserProducts();
@@ -15,12 +16,12 @@ const Adverts = () => {
         <section className="p-5 w-full">
           <article className="flex justify-between mb-5">
             <h1 className="text-green-900 font-bold text-2xl">Anúncios</h1>
-            <button
-              type="button"
+            <Link
+              to="/profile/adverts/create"
               className="font-bold w-10 h-10 rounded-full flex justify-center items-center bg-green-900"
             >
               <span className="text-white text-2xl">+</span>
-            </button>
+            </Link>
           </article>
           <article>
             {
