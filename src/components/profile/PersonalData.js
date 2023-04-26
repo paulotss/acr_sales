@@ -15,10 +15,6 @@ const PersonalData = (props) => {
         <span className="font-bold">Celular: </span>
         { props.cellPhone }
       </p>
-      <p className="mb-3">
-        <span className="font-bold">Whatsapp: </span>
-        { props.whatsapp }
-      </p>
     </section>
   )
 };
