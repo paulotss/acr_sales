@@ -9,6 +9,7 @@ import ProfilePersonalData from './pages/Profile/ProfilePersonalData';
 import Adverts from './pages/Profile/Adverts';
 import NewAdvertForm from './pages/Profile/NewAdvertForm';
 import Requests from './pages/Profile/Requests';
+import Sales from './pages/Profile/Sales';
 
 const App = () => {
   return (
@@ -21,6 +22,7 @@ const App = () => {
         <Route path='/profile/adverts' element={ <Adverts /> } />
         <Route path='/profile/adverts/create' element={ <NewAdvertForm /> } />
         <Route path='/profile/requests' element={ <Requests /> } />
+        <Route path='/profile/sales' element={ <Sales /> } />
         <Route path='/login' element={ <Login /> } />
         <Route path='/register' element={ <NewUserForm /> } />
         <Route path='/' element={ <HomePage /> }  />
