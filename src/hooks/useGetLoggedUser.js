@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
-import { redirect } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import axios from '../http';
 
 const useGetLoggedUser = () => {
+  const navigate = useNavigate();
   const [user, setUser] = useState({
     id: "",
     firstName: "",
@@ -31,17 +32,21 @@ const useGetLoggedUser = () => {
   useEffect(() => {
     const getUser = async () => {
       try {
-        const result = await axios.get(
-          "/user",
-          {
-            headers: { "authorization": sessionStorage.getItem("auth") }
-          }
-        );
-        setUser(result.data);
+        const auth = sessionStorage.getItem("auth");
+        if (auth) {
+          const result = await axios.get(
+            "/user",
+            {
+              headers: { "authorization": sessionStorage.getItem("auth") }
+            }
+          );
+          setUser(result.data);
+        } else {
+          navigate("/login");
+        }
       } catch (error) {
-        return redirect("/login");
+        navigate("/login");
       }
-      return null;
     }
     getUser();
   }, []);
