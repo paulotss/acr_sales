@@ -37,7 +37,7 @@ const useGetLoggedUser = () => {
           const result = await axios.get(
             "/user",
             {
-              headers: { "authorization": sessionStorage.getItem("auth") }
+              headers: { "authorization": auth }
             }
           );
           setUser(result.data);

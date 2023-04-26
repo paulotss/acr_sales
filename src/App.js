@@ -6,6 +6,7 @@ import ItemPage from './pages/ItemPage';
 import Login from './pages/Login';
 import NewUserForm from './pages/NewUserForm';
 import ProfilePersonalData from './pages/Profile/ProfilePersonalData';
+import Adverts from './pages/Profile/Adverts';
 
 const App = () => {
   return (
@@ -15,6 +16,7 @@ const App = () => {
         <Route path='/search/:id' element={ <SearchCategory /> } />
         <Route path='/item/:id' element={ <ItemPage /> } />
         <Route path='/profile' element={ <ProfilePersonalData /> } />
+        <Route path='/profile/adverts' element={ <Adverts /> } />
         <Route path='/login' element={ <Login /> } />
         <Route path='/register' element={ <NewUserForm /> } />
         <Route path='/' element={ <HomePage /> }  />
