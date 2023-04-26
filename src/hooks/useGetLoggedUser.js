@@ -44,7 +44,6 @@ const useGetLoggedUser = () => {
       return null;
     }
     getUser();
-    console.log(user)
   }, []);
   return {
     user
