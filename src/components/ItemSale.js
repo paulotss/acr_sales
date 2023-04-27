@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
+import useConvertDate from "../hooks/useConvertDate";
 
 const ItemSale = (props) => {
-  const BASE_URL = process.env.REACT_APP_API_BASE_URL || '';
+  const { convertedDate } = useConvertDate(props.createdAt);
 
   return (
     <Link
@@ -15,7 +16,7 @@ const ItemSale = (props) => {
         />
       </div>
       <p className="text-left">{props.data.title}</p>
-      <p>DD/MM/AAAA</p>
+      <p>{convertedDate}</p>
     </Link>
   )
 }

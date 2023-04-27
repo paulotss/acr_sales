@@ -1,5 +1,7 @@
+import useConvertDate from "../hooks/useConvertDate";
+
 const ItemRequest = (props) => {
-  const BASE_URL = process.env.REACT_APP_API_BASE_URL || '';
+  const { convertedDate } = useConvertDate(props.createdAt);
 
   return (
     <div className="flex justify-between p-2 border border-gray-300">
@@ -10,7 +12,7 @@ const ItemRequest = (props) => {
         />
       </div>
       <p className="text-left">{props.data.title}</p>
-      <p>DD/MM/AAAA</p>
+      <p>{convertedDate}</p>
     </div>
   )
 }

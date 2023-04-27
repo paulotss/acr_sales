@@ -45,6 +45,7 @@ const Sales = () => {
               sales.map((sale) => (
                 <ItemSale
                   key={ sale.id }
+                  createdAt={ sale.createdAt }
                   data={ sale.products }
                   saleId={ sale.id }
                 />

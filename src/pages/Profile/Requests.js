@@ -44,7 +44,8 @@ const Requests = () => {
               requests.map((request) => (
                 <ItemRequest
                   key={request.id}
-                  data={ request.products }
+                  createdAt={request.createdAt}
+                  data={request.products}
                 />
               ))
             }
