@@ -8,9 +8,9 @@ const ProfilePersonalData = () => {
   return (
     <>
       <Head />
-      <HeadTitle title="Meus dados" />
+      <HeadTitle title="Profile" />
       <section className="flex">
-        <ProfileMenu />
+        <ProfileMenu linkActive={1} />
         <article className="text-green-900 p-5">
           <p className="mb-3">
             <span className="font-bold">Nome: </span>

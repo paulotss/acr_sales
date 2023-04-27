@@ -109,7 +109,7 @@ const NewAdvertForm = () => {
       <Head />
       <HeadTitle title="Profile" />
       <section className="flex">
-        <ProfileMenu />
+        <ProfileMenu linkActive={2} />
         <article className="p-5 w-full">
           <h1 className="mb-3 font-bold text-2xl text-green-900">Novo anúncio</h1>
           <form className="flex flex-col">

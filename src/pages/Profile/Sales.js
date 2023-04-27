@@ -37,7 +37,7 @@ const Sales = () => {
       <Head />
       <HeadTitle title="Profile" />
       <section className="flex">
-        <ProfileMenu />
+        <ProfileMenu linkActive={4} />
         <section className="p-5 w-full">
           <h1 className="text-green-900 font-bold text-2xl">Vendas</h1>
           <article className="mt-3">
