@@ -8,10 +8,10 @@ const ItemSale = (props) => {
       to={`/profile/sale/${props.data.id}`}
       className="flex justify-between p-2 border border-gray-300 cursor-pointer"
     >
-      <div className="w-12 h-12">
+      <div className="w-24">
         <img
-          src={`${BASE_URL}/static/${props.data.cover}`}
-          className="w-12"
+          src={`https://tebas-bucket.s3.sa-east-1.amazonaws.com/${props.data.cover}`}
+          className="w-24"
         />
       </div>
       <p className="text-left">{props.data.title}</p>
