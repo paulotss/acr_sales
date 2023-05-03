@@ -40,7 +40,7 @@ const ItemPage = () => {
             description={ product.description }
             cover={ product.cover }
             userName={ `${product.user.firstName} ${product.user.lastName}` }
-            userWhats={ product.user.whatsapp }
+            userEmail={ product.user.email }
           />
         }
       </section>

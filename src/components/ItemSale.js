@@ -1,29 +1,23 @@
-import { useContext } from "react";
-import AppContext from "../contexts/AppContext";
+import { Link } from "react-router-dom";
+import useConvertDate from "../hooks/useConvertDate";
 
 const ItemSale = (props) => {
-  const BASE_URL = process.env.REACT_APP_API_BASE_URL || '';
-  const { setActProfile, setSaleData } = useContext(AppContext);
-
-  const handleClick = (data) => {
-    setSaleData(data)
-    setActProfile(6)
-  }
+  const { convertedDate } = useConvertDate(props.createdAt);
 
   return (
-    <div
+    <Link
+      to={`/profile/sale/${props.data.id}`}
       className="flex justify-between p-2 border border-gray-300 cursor-pointer"
-      onClick={ () => handleClick(props.saleId) }
     >
-      <div className="w-12 h-12">
+      <div className="w-24">
         <img
-          src={`${BASE_URL}/static/${props.data.cover}`}
-          className="w-12"
+          src={`https://tebas-bucket.s3.sa-east-1.amazonaws.com/${props.data.cover}`}
+          className="w-24"
         />
       </div>
       <p className="text-left">{props.data.title}</p>
-      <p>DD/MM/AAAA</p>
-    </div>
+      <p>{convertedDate}</p>
+    </Link>
   )
 }
 
