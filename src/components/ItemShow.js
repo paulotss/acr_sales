@@ -118,14 +118,14 @@ const ItemShow = (props) => {
             Object.keys(pixOrder).length === 0 ?
             <button
               type='button'
-              className="bg-green-900 p-2 w-24 text-white mt-3 rounded-full disabled:bg-gray-400"
+              className="bg-green-900 p-2 text-white mt-3 rounded-full disabled:bg-gray-400"
               onClick={ getPix }
               disabled={ isLoading }
             >
               {
                 !isLoading ?
                   'Gerar Pix' :
-                  <img src={ loadingGif } className="w-5 ml-8 text-center" />
+                  <img src={ loadingGif } className="w-5 object-contain text-center" />
               }
             </button> :
             <div className="flex flex-col items-center">
@@ -145,7 +145,7 @@ const ItemShow = (props) => {
                     {
                       !isLoading ?
                         'Confirmar pagamento' :
-                        <img src={ loadingGif } className="w-5 ml-28 text-center" />
+                        <img src={ loadingGif } className="w-5 object-contain text-center" />
                     }
                   </button>
                 </> :
