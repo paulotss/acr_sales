@@ -88,31 +88,37 @@ const ItemShow = (props) => {
   }
 
   return (
+    <>
     <article className="flex justify-left">
       <div
-        className="shrink-0 m-2"
+        className="shrink-0"
       >
-        <img
-          src={ `https://tebas-bucket.s3.sa-east-1.amazonaws.com/${cover}` }
-          className="max-h-md max-w-md"
-        />
-      </div>
-      <div>
-        <p className="mb-3 text-2xl font-bold text-green-900">
-          { price.toLocaleString('pt-BR', { style:'currency', currency:'BRL' }) }
-        </p>
+        <div className="flex justify-center bg-gray-300">
+          <img
+            src={ `https://tebas-bucket.s3.sa-east-1.amazonaws.com/${cover}` }
+            className="max-h-md max-w-max"
+          />
+        </div>
+      <div className="max-w-md mt-3">
         <p className="mb-3 text-xl font-bold text-green-900">{ title }</p>
         <p className="mb-3 text-green-900">{ description }</p>
-        <div className="p-2 bg-gray-300 border-2 border-green-900">
-          <p className="text-xl font-bold text-green-900">Nome: {props.userName}</p>
-          <div className="font-bold text-green-900 mt-2 flex">
-            Contato: { props.userEmail }
+      </div>
+      </div>
+      
+      <div>
+        <div className="mb-3 text-2xl font-bold text-white bg-green-600 p-2 rounded-r-full w-80 text-right">
+          { price.toLocaleString('pt-BR', { style:'currency', currency:'BRL' }) }
+        </div>
+        <div className="ml-3 p-2 bg-gray-100 border-2 border-gray-300 rounded-lg text-center w-80">
+          <p className="text-xl font-bold text-green-900">{props.userName}</p>
+          <div className="font-bold text-green-900 mt-2">
+            { props.userEmail }
           </div>
           {
             Object.keys(pixOrder).length === 0 ?
             <button
               type='button'
-              className="bg-green-900 p-2 w-24 text-white mt-3 disabled:bg-gray-400"
+              className="bg-green-900 p-2 w-24 text-white mt-3 rounded-full disabled:bg-gray-400"
               onClick={ getPix }
               disabled={ isLoading }
             >
@@ -122,17 +128,17 @@ const ItemShow = (props) => {
                   <img src={ loadingGif } className="w-5 ml-8 text-center" />
               }
             </button> :
-            <div>
+            <div className="flex flex-col items-center">
               {
                 !statusPix ?
                 <>
                   <img
-                  src={ pixOrder.qr_codes[0].links[0].href }
-                  className="w-64 mt-3"
+                    src={ pixOrder.qr_codes[0].links[0].href }
+                    className="w-64 mt-3"
                   />
                   <button
                     type='button'
-                    className="bg-green-900 p-2 w-64 text-white disabled:bg-gray-400"
+                    className="bg-green-900 p-2 mt-3 text-white disabled:bg-gray-400 rounded-full"
                     onClick={ getStatusPix }
                     disabled={ isLoading }
                   >
@@ -143,7 +149,7 @@ const ItemShow = (props) => {
                     }
                   </button>
                 </> :
-                <p className='text-green-900 mt-3'>
+                <p className='text-green-900 mt-3 text-center'>
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6 inline mr-2">
                     <path fillRule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clipRule="evenodd" />
                   </svg>
@@ -168,6 +174,7 @@ const ItemShow = (props) => {
         theme="colored"
       />
     </article>
+    </>
   )
 };
 
