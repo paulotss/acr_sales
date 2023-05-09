@@ -6,11 +6,11 @@ const ItemDisplay = (props) => {
   return (
     <Link to={ `/item/${props.id}` } className="m-3 w-64">
       <div
-        className=""
+        className="w-64 h-48 bg-gray-300 rounded-lg"
       >
         <img
           src={ `https://tebas-bucket.s3.sa-east-1.amazonaws.com/${props.cover}` }
-          className="max-w-64 max-h-xs"
+          className="object-contain w-64 h-48"
         />
       </div>
       <p className="text-green-900 mt-2">{ props.title }</p>
