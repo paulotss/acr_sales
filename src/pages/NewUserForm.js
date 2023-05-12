@@ -1,95 +1,72 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Footer from "../components/Footer";
 import Head from "../components/Head";
 import axios from '../http';
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 import 'react-toastify/dist/ReactToastify.css';
 
 const NewUserForm = () => {
   const navigate = useNavigate();
 
-  const [userData, setUserData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    password: "",
-    cpf: "",
-    area: "",
-    cellPhone: "",
-    cep: "",
-    state:"",
-    country: "",
-    city: "",
-    complement: "",
-    number: "",
-    street: "",
-    locality: "",
+  const formik = useFormik({
+    initialValues: {
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: "",
+      cpf: "",
+      area: "",
+      cellPhone: "",
+      cep: "",
+      state:"AC",
+      country: "BRA",
+      city: "",
+      complement: "",
+      number: "",
+      street: "",
+      locality: "",
+    },
+    validationSchema: Yup.object({
+      firstName: Yup.string().required("Obrigatório.").max(100),
+      lastName: Yup.string().required("Obrigatório.").max(100),
+      email: Yup.string().required("Obrigatório.").max(100).email("Formato inválido."),
+      password: Yup.string().required("Obrigatório.").max(100).min(6, "Mínimo 6 dígitos."),
+      cpf: Yup
+        .string()
+        .required("Obrigatório.")
+        .min(11, "11 números.")
+        .matches(/^[0-9]+$/, "Somento números."),
+      area: Yup.string().required("DDD obrigatório.")
+        .max(2, "Deve conter 2 dígitos.").min(2, "Deve conter 2 dígitos.")
+        .matches(/^[0-9]+$/, "Somento números."),
+      cellPhone: Yup.string().required("Celular obrigatório.")
+        .max(9, "Deve conter 9 dígitos.").min(9, "Deve conter 9 dígitos.")
+        .matches(/^[0-9]+$/, "Somento números."),
+      cep: Yup.string().required("Obrigatório.")
+        .max(8, "Deve conter 8 dígitos.").min(8, "Deve conter 8 dígitos.")
+        .matches(/^[0-9]+$/, "Somento números."),
+      state: Yup.string().required("Obrigatório.").min(2),
+      country: Yup.string(),
+      city: Yup.string().required("Obrigatório.").max(45),
+      complement: Yup.string().max(100),
+      number: Yup.string().required("Obrigatório.")
+        .matches(/^[0-9]+$/, "Somento números."),
+      street: Yup.string().required("Obrigatório.").max(100),
+      locality: Yup.string().required("Obrigatório.").max(100),
+    }),
+    onSubmit: values => {
+      submitForm(values)
+    }
   });
 
-  const [ confirmPassword, setConfirmPassword ] = useState("")
-
-  const [ isValid, setIsValid ] = useState(false);
-
-  const userValidate = () => {
-    const {
-      firstName,
-      lastName,
-      email,
-      password,
-      cpf,
-      area,
-      cellPhone,
-      cep,
-      city,
-      number,
-      street,
-      locality,
-    } = userData;
-
-    const emailPattern = /^((?!\.)[\w-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/igm
-    const validation = [
-      firstName.length > 2,
-      lastName.length > 2,
-      emailPattern.test(email),
-      (password.length > 5) && (password === confirmPassword),
-      cpf.length === 11,
-      area.length === 2,
-      cellPhone.length === 9,
-      cep.length === 9,
-      city.length > 3,
-      Number(number) > 0,
-      street.length > 3,
-      locality.length > 3
-    ];
-
-    return validation.every((val) => val);
-  }
-
-  const handleChangeUser = ({ target }) => {
-    let { value, name } = target;
-    switch (name) {
-      case "cpf":
-        value = value.replace(/\D/g, "");
-      case "area":
-        value = value.replace(/\D/g, "");
-      case "number":
-        value = value.replace(/\D/g, "");
-      case "cep":
-        value = value.replace(/\D/g, "");
-    }
-    setUserData({
-      ...userData,
-      [name]: value,
-    });
-  }
-
-  const submitForm = async () => {
-
+  const submitForm = async (values) => {
     try {
       await axios.post(
         "/user/create",
-        userData
+        values
       );
       navigate("/login");
     } catch (error) {
@@ -101,13 +78,6 @@ const NewUserForm = () => {
     }
   }
 
-  useEffect(() => {
-    if(userValidate()) {
-      setIsValid(true);
-    }
-  }, [userData, confirmPassword]);
-
-
   return (
     <main>
       <Head />
@@ -117,7 +87,7 @@ const NewUserForm = () => {
         </h1>
       </section>
       <section className="flex justify-center align-center mt-5">
-        <article className="p-5 border w-[70%]">
+        <form onSubmit={formik.handleSubmit} className="p-5 border w-[70%]">
           <div className="mb-5">
             <label htmlFor="firstName" className="text-green-900">Nome</label>
             <input
@@ -125,9 +95,11 @@ const NewUserForm = () => {
               name="firstName"
               id="firstName"
               className="border-2 p-2 w-full"
-              onChange={ handleChangeUser }
-              value={ userData.firstName }
+              {...formik.getFieldProps('firstName')}
             />
+            {formik.touched.firstName && formik.errors.firstName ? (
+              <div className="text-red-600">{formik.errors.firstName}</div>
+            ) : null}
           </div>
           <div className="mb-5">
             <label htmlFor="lastName" className="text-green-900">Sobrenome</label>
@@ -136,9 +108,11 @@ const NewUserForm = () => {
               name="lastName"
               id="lastName"
               className="border-2 p-2 w-full"
-              onChange={ handleChangeUser }
-              value={ userData.lastName }
+              {...formik.getFieldProps('lastName')}
             />
+            {formik.touched.lastName && formik.errors.lastName ? (
+              <div className="text-red-600">{formik.errors.lastName}</div>
+            ) : null}
           </div>
           <div className="mb-5">
             <label htmlFor="email" className="text-green-900">Email</label>
@@ -147,21 +121,24 @@ const NewUserForm = () => {
               name="email"
               id="email"
               className="border-2 p-2 w-full"
-              onChange={ handleChangeUser }
-              value={ userData.email }
+              {...formik.getFieldProps('email')}
             />
+            {formik.touched.email && formik.errors.email ? (
+              <div className="text-red-600">{formik.errors.email}</div>
+            ) : null}
           </div>
           <div className="mb-5">
-            <label htmlFor="email" className="text-green-900">CPF</label>
+            <label htmlFor="cpf" className="text-green-900">CPF</label>
             <input
               type="text"
               name="cpf"
               id="cpf"
               className="border-2 p-2 w-full"
-              onChange={ handleChangeUser }
-              value={ userData.cpf }
-              maxLength={ 11 }
+              {...formik.getFieldProps('cpf')}
             />
+            {formik.touched.cpf && formik.errors.cpf ? (
+              <div className="text-red-600">{formik.errors.cpf}</div>
+            ) : null}
           </div>
           <div className="mb-5">
             <label className="text-green-900">Celular</label>
@@ -171,21 +148,23 @@ const NewUserForm = () => {
               name="area"
               id="area"
               className="border-2 p-2 w-10 mr-2"
-              onChange={ handleChangeUser }
-              value={ userData.area }
               placeholder="99"
-              maxLength={ 2 }
+              {...formik.getFieldProps('area')}
             />
             <input
               type="text"
               name="cellPhone"
               id="cellPhone"
               className="border-2 p-2 w-64"
-              onChange={ handleChangeUser }
-              value={ userData.cellPhone }
               placeholder="999999999"
-              maxLength={ 9 }
+              {...formik.getFieldProps('cellPhone')}
             />
+            {formik.touched.area && formik.errors.area ? (
+              <div className="text-red-600">{formik.errors.area}</div>
+            ) : null}
+            {formik.touched.cellPhone && formik.errors.cellPhone ? (
+              <div className="text-red-600">{formik.errors.cellPhone}</div>
+            ) : null}
           </div>
           <div className="mb-5">
             <label htmlFor="cep" className="text-green-900">CEP</label>
@@ -194,11 +173,12 @@ const NewUserForm = () => {
               name="cep"
               id="cep"
               className="border-2 p-2 w-full"
-              onChange={ handleChangeUser }
-              value={ userData.cep }
-              maxLength={ 9 }
               placeholder="99999999"
+              {...formik.getFieldProps('cep')}
             />
+            {formik.touched.cep && formik.errors.cep ? (
+              <div className="text-red-600">{formik.errors.cep}</div>
+            ) : null}
           </div>
           <div className="mb-5">
             <label htmlFor="state" className="text-green-900">Estado</label>
@@ -206,8 +186,7 @@ const NewUserForm = () => {
               name="state"
               id="state"
               className="border-2 p-2 w-full"
-              onChange={ handleChangeUser }
-              value={ userData.state }
+              {...formik.getFieldProps('state')}
             >
               <option value="AC">Acre</option>
               <option value="AL">Alagoas</option>
@@ -236,6 +215,9 @@ const NewUserForm = () => {
               <option value="SE">Sergipe</option>
               <option value="TO">Tocantins</option>
             </select>
+            {formik.touched.state && formik.errors.state ? (
+              <div className="text-red-600">{formik.errors.state}</div>
+            ) : null}
           </div>
           <div className="mb-5">
             <label htmlFor="city" className="text-green-900">Cidade</label>
@@ -244,43 +226,50 @@ const NewUserForm = () => {
               name="city"
               id="city"
               className="border-2 p-2 w-full"
-              onChange={ handleChangeUser }
-              value={ userData.city }
+              {...formik.getFieldProps('city')}
             />
+            {formik.touched.city && formik.errors.city ? (
+              <div className="text-red-600">{formik.errors.city}</div>
+            ) : null}
           </div>
           <div className="mb-5">
-            <label htmlFor="number" className="text-green-900">Número</label>
+            <label htmlFor="number" className="text-green-900">Número (casa, apt, lote, etc..)</label>
             <input
-              type="number"
+              type="text"
               name="number"
               id="number"
               className="border-2 p-2 w-full"
-              onChange={ handleChangeUser }
-              value={ userData.number }
-              min="0"
+              {...formik.getFieldProps('number')}
             />
+            {formik.touched.number && formik.errors.number ? (
+              <div className="text-red-600">{formik.errors.number}</div>
+            ) : null}
           </div>
           <div className="mb-5">
-            <label htmlFor="adress" className="text-green-900">Localidade</label>
+            <label htmlFor="locality" className="text-green-900">Localidade</label>
             <input
               type="text"
               name="locality"
               id="locality"
               className="border-2 p-2 w-full"
-              onChange={ handleChangeUser }
-              value={ userData.locality }
+              {...formik.getFieldProps('locality')}
             />
+            {formik.touched.locality && formik.errors.locality ? (
+              <div className="text-red-600">{formik.errors.locality}</div>
+            ) : null}
           </div>
           <div className="mb-5">
-            <label htmlFor="adress" className="text-green-900">Logradouro</label>
+            <label htmlFor="street" className="text-green-900">Bairro/Quadra</label>
             <input
               type="text"
               name="street"
               id="street"
               className="border-2 p-2 w-full"
-              onChange={ handleChangeUser }
-              value={ userData.street }
+              {...formik.getFieldProps('street')}
             />
+            {formik.touched.street && formik.errors.street ? (
+              <div className="text-red-600">{formik.errors.street}</div>
+            ) : null}
           </div>
           <div className="mb-5">
             <label htmlFor="complement" className="text-green-900">Complemento</label>
@@ -289,9 +278,11 @@ const NewUserForm = () => {
               name="complement"
               id="complement"
               className="border-2 p-2 w-full"
-              onChange={ handleChangeUser }
-              value={ userData.complement }
+              {...formik.getFieldProps('complement')}
             />
+            {formik.touched.complement && formik.errors.complement ? (
+              <div className="text-red-600">{formik.errors.complement}</div>
+            ) : null}
           </div>
           <div className="mb-5">
             <label htmlFor="password" className="text-green-900">Senha</label>
@@ -300,30 +291,19 @@ const NewUserForm = () => {
               name="password"
               id="password"
               className="border-2 p-2 w-full"
-              onChange={ handleChangeUser }
-              value={ userData.password }
+              {...formik.getFieldProps('password')}
             />
-          </div>
-          <div className="mb-5">
-            <label htmlFor="confirm_password" className="text-green-900">Confirmação de senha</label>
-            <input
-              type="password"
-              name="confirm_password"
-              id="confirm_password"
-              className="border-2 p-2 w-full"
-              onChange={ ({ target }) => setConfirmPassword(target.value) }
-              value={ confirmPassword }
-            />
+            {formik.touched.password && formik.errors.password ? (
+              <div className="text-red-600">{formik.errors.password}</div>
+            ) : null}
           </div>
           <button
-            type="button"
-            disabled={!isValid}
+            type="submit"
             className="bg-green-900 p-2 w-24 text-white disabled:bg-gray-400"
-            onClick={ submitForm }
           >
             Cadastrar!
           </button>
-        </article>
+        </form>
       </section>
       <Footer />
       <ToastContainer
