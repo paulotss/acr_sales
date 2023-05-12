@@ -33,7 +33,7 @@ const ItemShow = (props) => {
       setIsLoading(true);
       try {
         const result = await axios.get(
-          `/sales/genpix/${props.userId}`,
+          `/sales/genpix/${productId}`,
           {
             headers: { 'authorization': authorization }
           }
