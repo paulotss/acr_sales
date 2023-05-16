@@ -22,6 +22,12 @@ const ShowSale = () => {
       cellPhone: "",
       whatsapp: ""
     },
+    shipping: {
+      id: null,
+      name: null,
+      address: null,
+      price: null,
+    },
     cep: "",
     state: "",
     country: "",
@@ -38,7 +44,6 @@ const ShowSale = () => {
         `/sale/product/${id}`
       );
       setSale(result.data);
-      console.log(sale);
     } catch (error) {
       console.log(error);
     }
@@ -74,14 +79,6 @@ const ShowSale = () => {
               { sale.users.email }
             </p>
             <p className="mb-3">
-              <span className="font-bold">Celular: </span>
-              { sale.users.cellPhone }
-            </p>
-            <p className="mb-3">
-              <span className="font-bold">Whatsapp: </span>
-              { sale.users.whatsapp }
-            </p>
-            <p className="mb-3">
               <span className="font-bold">CEP: </span>
               { sale.cep }
             </p>
@@ -108,6 +105,10 @@ const ShowSale = () => {
             <p className="mb-3">
               <span className="font-bold">Complemento: </span>
               { sale.complement }
+            </p>
+            <p>
+              <span className="font-bold">Entrega: </span>
+              { sale.shipping.address }
             </p>
           </article>
         </section>
