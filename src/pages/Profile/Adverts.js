@@ -31,6 +31,7 @@ const Adverts = () => {
                   id={ advert.id }
                   title={ advert.title }
                   cover={ advert.cover }
+                  amount={ advert.amount }
                   deleteAdvert={ deleteAdvert }
                 />
               ))

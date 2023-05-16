@@ -7,7 +7,7 @@ import loadingGif from '../media/rolling.gif';
 import ShippingSelect from './ShippingSelect';
 
 const ItemShow = (props) => {
-  const { productId, title, price, description, cover } = props;
+  const { productId, title, price, description, cover, amount } = props;
   const BASE_URL = process.env.REACT_APP_API_BASE_URL;
   const [pixOrder, setPixOrder] = useState({});
   const [statusPix, setStatusPix] = useState(false);
@@ -71,6 +71,10 @@ const ItemShow = (props) => {
             await axios.post(
               '/sales',
               { userId: user.id, productId: productId }
+            );
+            await axios.put(
+              `/product/${productId}`,
+              {amount: (Number(amount) - 1)}
             );
             setStatusPix(true);
             toast.success("Pagamento realizado!")
