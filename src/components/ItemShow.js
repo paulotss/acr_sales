@@ -108,13 +108,13 @@ const ItemShow = (props) => {
       </div>
       </div>
       
-      <div>
+      <div className="w-full">
         <div className="mb-3 text-2xl font-bold text-white bg-green-600 p-2 rounded-r-full w-80 text-right">
           { (priceShipping + price).toLocaleString(
             'pt-BR',
             { style:'currency', currency:'BRL' }) }
         </div>
-        <div className="ml-3 p-2 bg-gray-100 border-2 border-gray-300 rounded-lg text-center min-w-96">
+        <div className="ml-3 p-2 bg-gray-100 border-2 border-gray-300 rounded-lg text-center w-full">
           <p className="text-xl font-bold text-green-900">{props.userName}</p>
           <div className="font-bold text-green-900 mt-2">
             { props.userEmail }
