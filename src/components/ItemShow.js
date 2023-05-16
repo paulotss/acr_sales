@@ -4,13 +4,15 @@ import axios from '../http';
 import { ToastContainer, toast } from "react-toastify";
 import whatsappIcon from '../media/whatsapp.png';
 import loadingGif from '../media/rolling.gif';
+import ShippingSelect from './ShippingSelect';
 
 const ItemShow = (props) => {
-  const { productId, title, price, description, cover } = props;
+  const { productId, title, price, description, cover, amount } = props;
   const BASE_URL = process.env.REACT_APP_API_BASE_URL;
   const [pixOrder, setPixOrder] = useState({});
   const [statusPix, setStatusPix] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [priceShipping, setPriceShipping] = useState(0);
   const navigate = useNavigate();
 
   const getUser = async () => {
@@ -32,8 +34,9 @@ const ItemShow = (props) => {
     if (authorization) {
       setIsLoading(true);
       try {
-        const result = await axios.get(
-          `/sales/genpix/${productId}`,
+        const result = await axios.post(
+          `/sales/genpix`,
+          { priceShipping, id: productId },
           {
             headers: { 'authorization': authorization }
           }
@@ -68,6 +71,10 @@ const ItemShow = (props) => {
             await axios.post(
               '/sales',
               { userId: user.id, productId: productId }
+            );
+            await axios.put(
+              `/product/${productId}`,
+              {amount: (Number(amount) - 1)}
             );
             setStatusPix(true);
             toast.success("Pagamento realizado!")
@@ -105,15 +112,20 @@ const ItemShow = (props) => {
       </div>
       </div>
       
-      <div>
+      <div className="w-full">
         <div className="mb-3 text-2xl font-bold text-white bg-green-600 p-2 rounded-r-full w-80 text-right">
-          { price.toLocaleString('pt-BR', { style:'currency', currency:'BRL' }) }
+          { (priceShipping + price).toLocaleString(
+            'pt-BR',
+            { style:'currency', currency:'BRL' }) }
         </div>
-        <div className="ml-3 p-2 bg-gray-100 border-2 border-gray-300 rounded-lg text-center min-w-96">
+        <div className="ml-3 p-2 bg-gray-100 border-2 border-gray-300 rounded-lg text-center w-full">
           <p className="text-xl font-bold text-green-900">{props.userName}</p>
           <div className="font-bold text-green-900 mt-2">
             { props.userEmail }
           </div>
+          <ShippingSelect
+            setPriceShipping={setPriceShipping}
+            statusPix={Object.keys(pixOrder).length > 0} />
           {
             Object.keys(pixOrder).length === 0 ?
             <button
