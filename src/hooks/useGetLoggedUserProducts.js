@@ -24,10 +24,15 @@ const useGetLoggedUserProducts = () => {
   }
 
   const deleteAdvert = async ({ target }) => {
-    await axios.delete(
-      `/product/${target.value}`
-    );
-    getProducts();
+    try {
+      console.log(target.id);
+      await axios.delete(
+        `/product/${target.id}`
+      );
+      getProducts();
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   useEffect(() => {

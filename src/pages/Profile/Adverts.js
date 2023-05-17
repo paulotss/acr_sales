@@ -18,7 +18,7 @@ const Adverts = () => {
             <h1 className="text-green-900 font-bold text-2xl">Anúncios</h1>
             <Link
               to="/profile/adverts/create"
-              className="font-bold w-10 h-10 rounded-full flex justify-center items-center bg-green-900"
+              className="font-bold w-8 h-8 rounded-full flex justify-center items-center bg-green-900"
             >
               <span className="text-white text-2xl">+</span>
             </Link>
