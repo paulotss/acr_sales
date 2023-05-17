@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import axios from '../http';
 
 const useGetLoggedUserProducts = () => {
@@ -30,8 +31,9 @@ const useGetLoggedUserProducts = () => {
         `/product/${target.id}`
       );
       getProducts();
+      toast.success("Anúncio removido com sucesso!")
     } catch (error) {
-      console.log(error);
+      toast.error("Não foi possível excluir!")
     }
   }
 
