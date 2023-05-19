@@ -3,6 +3,7 @@ import HeadTitle from '../../components/HeadTitle';
 import ProfileMenu from '../../components/profile/ProfileMenu';
 import ItemProfile from '../../components/ItemProfile';
 import useGetLoggedUserProducts from '../../hooks/useGetLoggedUserProducts';
+import { ToastContainer } from "react-toastify";
 import { Link } from 'react-router-dom';
 
 const Adverts = () => {
@@ -18,7 +19,7 @@ const Adverts = () => {
             <h1 className="text-green-900 font-bold text-2xl">Anúncios</h1>
             <Link
               to="/profile/adverts/create"
-              className="font-bold w-10 h-10 rounded-full flex justify-center items-center bg-green-900"
+              className="font-bold w-8 h-8 rounded-full flex justify-center items-center bg-green-900"
             >
               <span className="text-white text-2xl">+</span>
             </Link>
@@ -39,6 +40,18 @@ const Adverts = () => {
           </article>
         </section>
       </section>
+      <ToastContainer
+        position="top-left"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
     </>
   )
 }

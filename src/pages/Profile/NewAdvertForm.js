@@ -1,27 +1,51 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import useGetLoggedUser from '../../hooks/useGetLoggedUser';
 import axios from '../../http';
 import Head from '../../components/Head';
 import HeadTitle from '../../components/HeadTitle';
 import ProfileMenu from '../../components/profile/ProfileMenu';
+import { useFormik } from "formik";
+import * as Yup from "yup";
 import { ToastContainer, toast } from 'react-toastify';
 
 const NewAdvertForm = () => {
-  const BASE_URL = process.env.REACT_APP_API_BASE_URL;
+  const formik = useFormik({
+    initialValues: {
+      title: "",
+      description: "",
+      amount: "",
+      width: "",
+      height: "",
+      weight: "",
+      depth: "",
+      price: "",
+      categoryId: 1,
+    },
+    validationSchema: Yup.object({
+      title: Yup.string().required("Obrigatório").min(3, "Mínimo de 3 caracteres"),
+      description: Yup.string().required("Obrigatório").min(3, "Mínimo de 3 caracteres"),
+      amount: Yup.string().required("Obrigatório").min(1, "Mínimo 1")
+        .matches(/^[0-9]+$/, "Somento números."),
+      width: Yup.string().required("Obrigatório").min(1, "Mínimo 1")
+        .matches(/^[0-9]+$/, "Somento números."),
+      height: Yup.string().required("Obrigatório").min(1, "Mínimo 1")
+        .matches(/^[0-9]+$/, "Somento números."),
+      weight: Yup.string().required("Obrigatório").min(1, "Mínimo 1")
+        .matches(/^[0-9]+$/, "Somento números."),
+      depth: Yup.string().required("Obrigatório").min(1, "Mínimo 1")
+        .matches(/^[0-9]+$/, "Somento números."),
+      price: Yup.string().required("Obrigatório")
+        .matches(/^[0-9]*(\.[0-9][0-9])?$/, "Formato moeda. Ex.: 999.99"),
+    }),
+    onSubmit: values => {
+      submitForm(values);
+    }
+  });
+
   const navigate = useNavigate();
   const [advert, setAdvert] = useState({
-    title: "",
-    description: "",
     cover: "",
-    amount: "",
-    width: "",
-    height: "",
-    weight: "",
-    depth: "",
-    price: "",
-    file:"",
-    categoryId: 1,
+    file: "",
   });
   const [image, setImage] = useState("");
   const [isValid, setIsValid] = useState(false);
@@ -29,33 +53,9 @@ const NewAdvertForm = () => {
 
   const getCategories = async () => {
     const result = await axios.get(
-      `${BASE_URL}/categories`
+      `/categories`
     );
     setCategories(result.data);
-  }
-
-  const validateAvertForm = () => {
-    const result = [
-      advert.title !== "",
-      advert.description !== "",
-      advert.cover !== "",
-      advert.amount > 0,
-      Number(advert.price) > 0,
-      advert.file !== "",
-    ];
-    return result.every((val) => val);
-  }
-
-  const handleChange = ({ target }) => {
-    let { name, value } = target;
-    if (name === "price") {
-      value = value.replace(/\D/g, "");
-      value = value.replace(/(\d)(\d{2})$/, "$1.$2")
-    }
-    setAdvert({
-      ...advert,
-      [name]: value
-    });
   }
 
   const handleChangeFile = ({ target }) => {
@@ -75,14 +75,15 @@ const NewAdvertForm = () => {
         cover: target.files[0].name,
         file: target.files[0]
       });
+      setIsValid(true);
     }
   }
 
-  const submitForm = async () => {
+  const submitForm = async (values) => {
     try {
       const auth = sessionStorage.getItem("auth");
       if (auth) {
-        await axios.post('/product', advert, {
+        await axios.post('/product', {...values, ...advert}, {
           headers: {
             'Content-Type': 'multipart/form-data',
             'authorization': auth
@@ -98,10 +99,6 @@ const NewAdvertForm = () => {
   }
 
   useEffect(() => {
-    setIsValid(validateAvertForm());
-  }, [advert]);
-
-  useEffect(() => {
     getCategories();
   }, []);
 
@@ -113,16 +110,19 @@ const NewAdvertForm = () => {
         <ProfileMenu linkActive={2} />
         <article className="p-5 w-full">
           <h1 className="mb-3 font-bold text-2xl text-green-900">Novo anúncio</h1>
-          <form className="flex flex-col">
+          <form className="flex flex-col" onSubmit={formik.handleSubmit}>
             <div className="mb-3">
               <label className="text-green-900">Título</label><br/>
               <input
                 className="border-2 p-2 w-full"
                 type="text"
                 name="title"
-                value={advert.title}
-                onChange={handleChange}
+                id="title"
+                {...formik.getFieldProps('title')}
               />
+              {formik.touched.title && formik.errors.title ? (
+              <div className="text-red-600 text-sm">{formik.errors.title}</div>
+              ) : null}
             </div>
 
             <div className="mb-3">
@@ -130,10 +130,13 @@ const NewAdvertForm = () => {
               <textarea
                 className="border-2 p-2 w-full h-24"
                 name="description"
-                value={advert.description}
-                onChange={handleChange}
+                id="description"
+                {...formik.getFieldProps('description')}
               >
               </textarea>
+              {formik.touched.description && formik.errors.description ? (
+              <div className="text-red-600 text-sm">{formik.errors.description}</div>
+              ) : null}
             </div>
 
             <div className="mb-3">
@@ -158,9 +161,9 @@ const NewAdvertForm = () => {
               <label className="text-green-900">Categoria</label><br/>
               <select
                 name="categoryId"
+                id="categoryId"
                 className="border-2 p-2 w-32"
-                value={ advert.categoryId }
-                onChange={ handleChange }
+                {...formik.getFieldProps('categoryId')}
               >
                 {
                   categories.map((category) => (
@@ -175,66 +178,77 @@ const NewAdvertForm = () => {
             <div className="mb-3">
               <label className="text-green-900">Quantidade</label><br/>
               <input
-                type="number"
+                type="text"
                 className="border-2 p-2 w-24"
                 name="amount"
-                value={advert.amount}
-                onChange={handleChange}
+                id="amount"
                 min="0"
+                {...formik.getFieldProps('amount')}
               />
+              {formik.touched.amount && formik.errors.amount ? (
+              <div className="text-red-600 text-sm">{formik.errors.amount}</div>
+              ) : null}
             </div>
 
             <div className="mb-3">
               <label className="text-green-900">Peso</label><br/>
               <input
-                type="number"
+                type="text"
                 className="border-2 p-2 w-24"
                 placeholder="kg"
                 name="weight"
-                value={advert.weight}
-                onChange={handleChange}
-                min="0"
+                id="weight"
+                {...formik.getFieldProps('weight')}
               />
+              {formik.touched.weight && formik.errors.weight ? (
+              <div className="text-red-600 text-sm">{formik.errors.weight}</div>
+              ) : null}
             </div>
 
             <div className="flex">
               <div className="mb-3 mr-2">
                 <label className="text-green-900">Largura</label><br/>
                 <input
-                  type="number"
+                  type="text"
                   className="border-2 p-2 w-24"
                   placeholder="cm"
                   name="width"
-                  value={advert.width}
-                  onChange={handleChange}
-                  min="0"
+                  id="width"
+                  {...formik.getFieldProps('width')}
                 />
+                {formik.touched.width && formik.errors.width ? (
+                <div className="text-red-600 text-sm">{formik.errors.width}</div>
+                ) : null}
               </div>
 
               <div className="mb-3 mr-2">
                 <label className="text-green-900">Altura</label><br/>
                 <input
-                  type="number"
+                  type="text"
                   className="border-2 p-2 w-24"
                   placeholder="cm"
                   name="height"
-                  value={advert.height}
-                  onChange={handleChange}
-                  min="0"
+                  id="height"
+                  {...formik.getFieldProps('height')}
                 />
+                {formik.touched.height && formik.errors.height ? (
+                <div className="text-red-600 text-sm">{formik.errors.height}</div>
+                ) : null}
               </div>
 
               <div className="mb-3">
                 <label className="text-green-900">Profundidade</label><br/>
                 <input
-                  type="number"
+                  type="text"
                   className="border-2 p-2 w-24"
                   placeholder="cm"
                   name="depth"
-                  value={advert.depth}
-                  onChange={handleChange}
-                  min="0"
+                  id="depth"
+                  {...formik.getFieldProps('depth')}
                 />
+                {formik.touched.depth && formik.errors.depth ? (
+                <div className="text-red-600 text-sm">{formik.errors.depth}</div>
+                ) : null}
               </div>
             </div>
 
@@ -245,15 +259,17 @@ const NewAdvertForm = () => {
                 className="border-2 p-2 w-32"
                 placeholder="R$"
                 name="price"
-                value={advert.price}
-                onChange={handleChange}
+                id="price"
+                {...formik.getFieldProps('price')}
               />
+              {formik.touched.price && formik.errors.price ? (
+              <div className="text-red-600 text-sm">{formik.errors.price}</div>
+              ) : null}
             </div>
 
             <button
-              type="button"
+              type="submit"
               className="bg-green-900 p-2 w-24 text-white disabled:bg-gray-400"
-              onClick={ submitForm }
               disabled={ !isValid }
             >
               Criar

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import axios from '../http';
 
 const useGetLoggedUserProducts = () => {
@@ -24,10 +25,16 @@ const useGetLoggedUserProducts = () => {
   }
 
   const deleteAdvert = async ({ target }) => {
-    await axios.delete(
-      `/product/${target.value}`
-    );
-    getProducts();
+    try {
+      console.log(target.id);
+      await axios.delete(
+        `/product/${target.id}`
+      );
+      getProducts();
+      toast.success("Anúncio removido com sucesso!")
+    } catch (error) {
+      toast.error("Não foi possível excluir!")
+    }
   }
 
   useEffect(() => {
