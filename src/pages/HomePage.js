@@ -32,7 +32,7 @@ const HomePage = () => {
   return (
     <main>
       <Head />
-      <section className="p-10 bg-green-900">
+      <section className="md:p-10 pt-10 bg-green-900">
         <article>
           <SearchBar products={products} />
         </article>
@@ -54,7 +54,7 @@ const HomePage = () => {
             </div>
           </article>
         }
-        <article className="flex justify-center mt-10 overflow-x-auto">
+        <article className="flex md:justify-center mt-10 overflow-x-auto">
           {
             categories.map((category) => (
               <Category
@@ -66,7 +66,7 @@ const HomePage = () => {
             ))
           }
         </article>
-        <article className="flex flex-wrap bg-white p-10 mt-10 justify-between rounded-lg">
+        <article className="flex flex-wrap bg-white md:p-10 mt-10 justify-center md:justify-between md:rounded-lg">
           {
             products.map((product) => (
               <ItemDisplay

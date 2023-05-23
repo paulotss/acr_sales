@@ -35,7 +35,7 @@ const Requests = () => {
     <>
       <Head />
       <HeadTitle title="Profile" />
-      <section className="flex">
+      <section className="flex flex-col md:flex-row">
         <ProfileMenu linkActive={3} />
         <section className="p-5 w-full">
           <h1 className="text-green-900 font-bold text-2xl">Pedidos</h1>
