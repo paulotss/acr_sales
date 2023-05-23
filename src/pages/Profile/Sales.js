@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import useGetLoggedUser from '../../hooks/useGetLoggedUser';
 import axios from "../../http";
 import Head from '../../components/Head';
 import HeadTitle from '../../components/HeadTitle';
@@ -9,6 +10,7 @@ import ItemSale from "../../components/ItemSale"
 const Sales = () => {
   const [sales, setSales] = useState([]);
   const navigate = useNavigate();
+  const { user } = useGetLoggedUser();
 
   const getSales = async () => {
     try {
@@ -38,21 +40,23 @@ const Sales = () => {
       <HeadTitle title="Profile" />
       <section className="flex flex-col md:flex-row">
         <ProfileMenu linkActive={4} />
-        <section className="p-5 w-full">
-          <h1 className="text-green-900 font-bold text-2xl">Vendas</h1>
-          <article className="mt-3">
-            {
-              sales.map((sale) => (
-                <ItemSale
-                  key={ sale.id }
-                  createdAt={ sale.createdAt }
-                  data={ sale.products }
-                  saleId={ sale.id }
-                />
-              ))
-            }
-          </article>
-        </section>
+        { user.seller === 1 ? 
+          <section className="p-5 w-full">
+            <h1 className="text-green-900 font-bold text-2xl">Vendas</h1>
+            <article className="mt-3">
+              {
+                sales.map((sale) => (
+                  <ItemSale
+                    key={ sale.id }
+                    createdAt={ sale.createdAt }
+                    data={ sale.products }
+                    saleId={ sale.id }
+                  />
+                ))
+              }
+            </article>
+          </section>
+        : <p className="text-green-900 font-bold text-center p-2 w-full">Área restrita para anunciantes.</p>}
       </section>
     </>
   )
