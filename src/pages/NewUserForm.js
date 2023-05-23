@@ -28,6 +28,7 @@ const NewUserForm = () => {
       number: "",
       street: "",
       locality: "",
+      seller: 0,
     },
     validationSchema: Yup.object({
       firstName: Yup.string().required("Obrigatório.").max(100),
