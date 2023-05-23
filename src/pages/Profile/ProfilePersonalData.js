@@ -9,7 +9,7 @@ const ProfilePersonalData = () => {
     <>
       <Head />
       <HeadTitle title="Profile" />
-      <section className="flex">
+      <section className="flex flex-col md:flex-row">
         <ProfileMenu linkActive={1} />
         <article className="text-green-900 p-5">
           <p className="mb-3">

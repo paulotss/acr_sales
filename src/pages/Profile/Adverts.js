@@ -12,7 +12,7 @@ const Adverts = () => {
     <>
       <Head />
       <HeadTitle title="Profile" />
-      <section className="flex">
+      <section className="flex flex-col md:flex-row">
         <ProfileMenu linkActive={2} />
         <section className="p-5 w-full">
           <article className="flex justify-between mb-5">
