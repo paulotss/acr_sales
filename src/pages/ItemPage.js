@@ -28,7 +28,7 @@ const ItemPage = () => {
           { product.title }
         </h1>
       </section>
-      <section className="p-10">
+      <section className="md:p-10 p-2">
         {
           Object.values(product).length > 0 &&
           <ItemShow

@@ -96,29 +96,29 @@ const ItemShow = (props) => {
 
   return (
     <>
-    <article className="flex justify-left">
+    <article className="flex justify-left flex-col md:flex-row">
       <div
-        className="shrink-0"
+        className="md:w-96"
       >
-        <div className="flex justify-center bg-gray-300">
+        <div className="flex justify-center bg-gray-300 md:w-96">
           <img
             src={ `https://tebas-bucket.s3.sa-east-1.amazonaws.com/${cover}` }
-            className="max-h-md max-w-max"
+            className="object-contain"
           />
         </div>
-      <div className="max-w-md mt-3">
-        <p className="mb-3 text-xl font-bold text-green-900">{ title }</p>
-        <p className="mb-3 text-green-900">{ description }</p>
-      </div>
+        <div className="max-w-md mt-3">
+          <p className="mb-3 text-xl font-bold text-green-900">{ title }</p>
+          <p className="mb-3 text-green-900">{ description }</p>
+        </div>
       </div>
       
       <div className="w-full">
-        <div className="mb-3 text-2xl font-bold text-white bg-green-600 p-2 rounded-r-full w-80 text-right">
+        <div className="mb-3 text-2xl font-bold text-white bg-green-600 p-2 md:rounded-r-full md:w-80 w-full md:text-right">
           { (priceShipping + price).toLocaleString(
             'pt-BR',
             { style:'currency', currency:'BRL' }) }
         </div>
-        <div className="ml-3 p-2 bg-gray-100 border-2 border-gray-300 rounded-lg text-center w-full">
+        <div className="md:ml-3 p-2 bg-gray-100 border-2 border-gray-300 rounded-lg text-center w-full">
           <p className="text-xl font-bold text-green-900">{props.userName}</p>
           <div className="font-bold text-green-900 mt-2">
             { props.userEmail }
