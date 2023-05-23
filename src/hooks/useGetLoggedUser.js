@@ -10,6 +10,7 @@ const useGetLoggedUser = () => {
     lastName: "",
     email: "",
     cpf: "",
+    seller: 0,
     address: {
       id: "",
       cep: "",

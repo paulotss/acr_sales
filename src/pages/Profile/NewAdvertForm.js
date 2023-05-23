@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import useGetLoggedUser from '../../hooks/useGetLoggedUser';
 import axios from '../../http';
 import Head from '../../components/Head';
 import HeadTitle from '../../components/HeadTitle';
@@ -9,6 +10,8 @@ import * as Yup from "yup";
 import { ToastContainer, toast } from 'react-toastify';
 
 const NewAdvertForm = () => {
+  const { user } = useGetLoggedUser();
+
   const formik = useFormik({
     initialValues: {
       title: "",
@@ -108,6 +111,7 @@ const NewAdvertForm = () => {
       <HeadTitle title="Profile" />
       <section className="flex flex-col md:flex-row">
         <ProfileMenu linkActive={2} />
+        { user.seller === 1 ? 
         <article className="p-5 w-full">
           <h1 className="mb-3 font-bold text-2xl text-green-900">Novo anúncio</h1>
           <form className="flex flex-col" onSubmit={formik.handleSubmit}>
@@ -288,6 +292,7 @@ const NewAdvertForm = () => {
             theme="colored"
           />
         </article>
+        : <p className="text-green-900 font-bold text-center p-2 w-full">Área restrita para anunciantes.</p>}
       </section>
     </>
   )

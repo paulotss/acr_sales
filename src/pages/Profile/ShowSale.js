@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import useGetLoggedUser from '../../hooks/useGetLoggedUser';
 import axios from "../../http";
 import Head from '../../components/Head';
 import HeadTitle from '../../components/HeadTitle';
 import ProfileMenu from '../../components/profile/ProfileMenu';
 
 const ShowSale = () => {
+  const { user } = useGetLoggedUser();
   const { id } = useParams();
   const [sale, setSale] = useState({
     products: {
@@ -59,6 +61,7 @@ const ShowSale = () => {
       <HeadTitle title="Profile" />
       <section className="flex flex-col md:flex-row">
         <ProfileMenu linkActive={4} />
+        { user.seller === 1 ? 
         <section className="p-5 w-full">
           <h1 className="text-green-900 font-bold text-2xl">Detalhes da venda:</h1>
           <article className="text-green-900 mt-5">
@@ -112,6 +115,7 @@ const ShowSale = () => {
             </p>
           </article>
         </section>
+        : <p className="text-green-900 font-bold text-center p-2 w-full">Área restrita para anunciantes.</p>}
       </section>
     </>
   )
