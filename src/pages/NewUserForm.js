@@ -87,7 +87,7 @@ const NewUserForm = () => {
         </h1>
       </section>
       <section className="flex justify-center align-center mt-5">
-        <form onSubmit={formik.handleSubmit} className="p-5 border w-[70%]">
+        <form onSubmit={formik.handleSubmit} className="p-5 md:border md:w-[70%]">
           <div className="mb-5">
             <label htmlFor="firstName" className="text-green-900">Nome</label>
             <input
