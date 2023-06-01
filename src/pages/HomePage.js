@@ -71,7 +71,7 @@ const HomePage = () => {
           }
         </article>
         <article className="flex flex-wrap bg-white md:p-10 mt-10 justify-center md:justify-between md:rounded-lg">
-          { !isLoading
+          { isLoading
             ? <div className="w-full flex justify-center">
                 <img src={loading} alt="" className="place-self-center self-center" />
               </div>
