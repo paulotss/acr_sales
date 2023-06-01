@@ -15,7 +15,7 @@ const HomePage = () => {
   const navigate = useNavigate();
 
   const getProducts = async () => {
-    const result = await axios.get("/products");
+    const result = await axios.get("/products?limit=10");
     setProducts(result.data);
   }
 
