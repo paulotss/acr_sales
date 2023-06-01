@@ -7,16 +7,20 @@ import Footer from "../components/Footer";
 import AppContext from "../contexts/AppContext";
 import { useNavigate } from "react-router-dom";
 import axios from "../http";
+import loading from "../media/loading.gif";
 
 const HomePage = () => {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const { search } = useContext(AppContext);
   const navigate = useNavigate();
 
   const getProducts = async () => {
-    const result = await axios.get("/products");
+    setIsLoading(true);
+    const result = await axios.get("/products?limit=10");
     setProducts(result.data);
+    setIsLoading(false)
   }
 
   const getCategories = async () => {
@@ -67,16 +71,19 @@ const HomePage = () => {
           }
         </article>
         <article className="flex flex-wrap bg-white md:p-10 mt-10 justify-center md:justify-between md:rounded-lg">
-          {
-            products.map((product) => (
-              <ItemDisplay
-                key={ product.id }
-                id={ product.id }
-                title={ product.title }
-                price={ product.price }
-                cover={ product.cover }
-              />
-            ))
+          { isLoading
+            ? <div className="w-full flex justify-center">
+                <img src={loading} alt="" className="place-self-center self-center" />
+              </div>
+            :  products.map((product) => (
+                <ItemDisplay
+                  key={ product.id }
+                  id={ product.id }
+                  title={ product.title }
+                  price={ product.price }
+                  cover={ product.cover }
+                />
+              ))
           }
         </article>
       </section>

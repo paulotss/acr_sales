@@ -18,17 +18,17 @@ const Head = () => {
     }
   }, [])
   return (
-    <section className="flex justify-between w-full p-4">
+    <section className="flex justify-between w-full p-4 sticky bg-white top-0">
       <div className="flex">
         <Link to="/" className="w-10 h-10">
-          <img src={ logo } />
+          <img src={ logo } alt="" />
         </Link>
         <h1 className="ml-2 font-bold text-2xl text-green-900 leading-normal">Tebas</h1>
       </div>
 
       <div className="flex">
         {
-          sessionStorage.getItem("auth")
+          token
           ? <>
               <button
                 type="button"
