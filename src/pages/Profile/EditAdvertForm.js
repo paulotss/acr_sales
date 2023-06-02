@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Head from "../../components/Head";
 import HeadTitle from "../../components/HeadTitle";
 import ProfileMenu from "../../components/profile/ProfileMenu";
@@ -19,6 +19,7 @@ const EditAdvertForm = () => {
     file: null,
   });
   const { id } = useParams();
+  const navigate = useNavigate();
 
   const handleChangeFile = ({ target }) => {
     const { size, type } = target.files[0];
@@ -40,8 +41,29 @@ const EditAdvertForm = () => {
     }
   }
 
-  const submitForm = (values) => {
-
+  const submitForm = async (values) => {
+    try {
+      const auth = sessionStorage.getItem("auth");
+      if (auth) {
+        await axios.put(`/product/${id}`,
+          {
+            ...values,
+            cover: image.cover,
+            file: image.file,
+          },
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+              'authorization': auth
+            }
+          });
+        navigate("/profile/adverts");
+      } else {
+        navigate("/login");
+      }
+    } catch (error) {
+      toast.error("Houve um problema! :(")
+    }
   }
 
   useEffect(() => {
@@ -64,7 +86,7 @@ const EditAdvertForm = () => {
         <ProfileMenu linkActive={2} />
           { isLoading
             ? <div className="flex justify-center w-full">
-                <img src={loading} alt="" />
+                <img src={loading} alt="" className="place-self-center self-center"/>
               </div>
             : <Formik
               initialValues={{
@@ -74,6 +96,7 @@ const EditAdvertForm = () => {
                 weight: product.weight || "",
                 width: product.width || "",
                 height: product.height || "",
+                depth: product.depth || "",
                 price: product.price,
                 categoryId: product.categoryId,
               }}
