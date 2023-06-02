@@ -18,7 +18,7 @@ const HomePage = () => {
 
   const getProducts = async () => {
     setIsLoading(true);
-    const result = await axios.get("/products?limit=10");
+    const result = await axios.get("/products?limit=16");
     setProducts(result.data);
     setIsLoading(false)
   }
@@ -72,7 +72,7 @@ const HomePage = () => {
         </article>
         <article className="flex flex-wrap bg-white md:p-10 mt-10 justify-center md:justify-between md:rounded-lg">
           { isLoading
-            ? <div className="w-full flex justify-center">
+            ? <div className="w-full flex justify-left">
                 <img src={loading} alt="" className="place-self-center self-center" />
               </div>
             :  products.map((product) => (
