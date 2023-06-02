@@ -154,8 +154,9 @@ const NewAdvertForm = () => {
               {
                 image ?
                 <img
-                src={ image }
-                className="w-80 border-2 border-green-900 mt-2"
+                  src={ image }
+                  alt=""
+                  className="w-80 border-2 border-green-900 mt-2"
                 /> :
                 ""
               }
