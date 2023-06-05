@@ -30,7 +30,7 @@ const ShowSale = () => {
   return (
     <>
       <Head />
-      <HeadTitle title="Profile" />
+      <HeadTitle title="Detalhes da venda" />
       <section className="flex flex-col md:flex-row">
         <ProfileMenu linkActive={4} />
         { !isLoading ? 

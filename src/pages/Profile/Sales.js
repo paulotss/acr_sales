@@ -38,7 +38,7 @@ const Sales = () => {
   return (
     <>
       <Head />
-      <HeadTitle title="Profile" />
+      <HeadTitle title="Vendas" />
       <section className="flex flex-col md:flex-row">
         <ProfileMenu linkActive={4} />
         { !isLoading 
