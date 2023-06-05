@@ -9,7 +9,6 @@ import loading from "../../media/loading.gif";
 
 const Sales = () => {
   const [sales, setSales] = useState([]);
-  const [user, setUser] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -19,18 +18,11 @@ const Sales = () => {
       try {
         const auth = sessionStorage.getItem("auth");
         if (auth) {
-          const resultUser = await axios.get(
-            "/user",
-            {
-              headers: { "authorization": auth }
-            }
-          );
-          setUser(resultUser.data);
-          const resultSale = await axios.get(
+          const result = await axios.get(
             `/sale/product/user`,
             { headers: { "authorization": auth } }
           );
-          setSales(resultSale.data);
+          setSales(result.data);
         } else {
           navigate("/login");
         }
@@ -50,7 +42,6 @@ const Sales = () => {
       <section className="flex flex-col md:flex-row">
         <ProfileMenu linkActive={4} />
         { !isLoading 
-        ? user.seller === 1 
           ? <section className="p-5 w-full">
               <h1 className="text-green-900 font-bold text-2xl">Vendas</h1>
               <article className="mt-3">
@@ -66,10 +57,9 @@ const Sales = () => {
                 }
               </article>
             </section>
-          : <p className="text-green-900 font-bold text-center p-2 w-full">Área restrita para anunciantes.</p>
-        : <div className="flex justify-center w-full">
-            <img src={loading} alt="" className="place-self-center self-center" />
-          </div>
+          : <div className="flex justify-center w-full">
+              <img src={loading} alt="" className="place-self-center self-center" />
+            </div>
       }
       </section>
     </>
