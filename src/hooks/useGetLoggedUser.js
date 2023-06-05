@@ -4,6 +4,7 @@ import axios from '../http';
 
 const useGetLoggedUser = () => {
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
   const [user, setUser] = useState({
     id: "",
     firstName: "",
@@ -32,6 +33,7 @@ const useGetLoggedUser = () => {
   });
   useEffect(() => {
     const getUser = async () => {
+      setIsLoading(true);
       try {
         const auth = sessionStorage.getItem("auth");
         if (auth) {
@@ -48,11 +50,13 @@ const useGetLoggedUser = () => {
       } catch (error) {
         navigate("/login");
       }
+      setIsLoading(false);
     }
     getUser();
-  }, []);
+  }, [navigate]);
   return {
-    user
+    user,
+    isLoading
   }
 }
 

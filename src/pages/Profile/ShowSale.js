@@ -1,69 +1,41 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import useGetLoggedUser from '../../hooks/useGetLoggedUser';
 import axios from "../../http";
 import Head from '../../components/Head';
 import HeadTitle from '../../components/HeadTitle';
 import ProfileMenu from '../../components/profile/ProfileMenu';
+import loading from "../../media/loading.gif";
 
 const ShowSale = () => {
-  const { user } = useGetLoggedUser();
+  const [sale, setSale] = useState({});
+  const [isLoading, setIsLoading] = useState(true);
   const { id } = useParams();
-  const [sale, setSale] = useState({
-    products: {
-      title: "",
-      price: "",
-    },
-    users: {
-      id: "",
-      firstName: "",
-      lastName: "",
-      email: "",
-      cpf: "",
-      password: "",
-      cellPhone: "",
-      whatsapp: ""
-    },
-    shipping: {
-      id: null,
-      name: null,
-      address: null,
-      price: null,
-    },
-    cep: "",
-    state: "",
-    country: "",
-    city: "",
-    complement: "",
-    number: "",
-    street: "",
-    locality: ""
-    });
-
-  const getSaleInfo = async () => {
-    try {
-      const result = await axios.get(
-        `/sale/product/${id}`
-      );
-      setSale(result.data);
-    } catch (error) {
-      console.log(error);
-    }
-  }
 
   useEffect(() => {
+    const getSaleInfo = async () => {
+      setIsLoading(true);
+      try {
+        const result = await axios.get(
+          `/sale/product/${id}`
+        );
+        setSale(result.data);
+      } catch (error) {
+        console.log(error);
+      }
+      setIsLoading(false);
+    }
     getSaleInfo();
-  }, []);
+  }, [id]);
 
   return (
     <>
       <Head />
-      <HeadTitle title="Profile" />
+      <HeadTitle title="Detalhes da venda" />
       <section className="flex flex-col md:flex-row">
         <ProfileMenu linkActive={4} />
-        { user.seller === 1 ? 
+        { !isLoading ? 
         <section className="p-5 w-full">
-          <h1 className="text-green-900 font-bold text-2xl">Detalhes da venda:</h1>
+          <h1 className="text-green-900 text-2xl">Detalhes da venda</h1>
           <article className="text-green-900 mt-5">
             <p className="mb-3">
               <span className="font-bold">Título: </span>
@@ -115,7 +87,10 @@ const ShowSale = () => {
             </p>
           </article>
         </section>
-        : <p className="text-green-900 font-bold text-center p-2 w-full">Área restrita para anunciantes.</p>}
+        : <div className="flex justify-center w-full">
+            <img src={loading} alt="" className="place-self-center self-center" />
+          </div>
+      }
       </section>
     </>
   )

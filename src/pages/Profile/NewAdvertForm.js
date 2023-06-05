@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import useGetLoggedUser from '../../hooks/useGetLoggedUser';
 import axios from '../../http';
 import Head from '../../components/Head';
 import HeadTitle from '../../components/HeadTitle';
@@ -8,10 +7,9 @@ import ProfileMenu from '../../components/profile/ProfileMenu';
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { ToastContainer, toast } from 'react-toastify';
+import loading from "../../media/loading.gif";
 
 const NewAdvertForm = () => {
-  const { user } = useGetLoggedUser();
-
   const formik = useFormik({
     initialValues: {
       title: "",
@@ -53,13 +51,8 @@ const NewAdvertForm = () => {
   const [image, setImage] = useState("");
   const [isValid, setIsValid] = useState(false);
   const [categories, setCategories] = useState([]);
-
-  const getCategories = async () => {
-    const result = await axios.get(
-      `/categories`
-    );
-    setCategories(result.data);
-  }
+  const [isLoading, setIsLoading] = useState(true);
+  const [user, setUser] = useState();
 
   const handleChangeFile = ({ target }) => {
     const { size, type } = target.files[0];
@@ -83,6 +76,7 @@ const NewAdvertForm = () => {
   }
 
   const submitForm = async (values) => {
+    setIsLoading(true);
     try {
       const auth = sessionStorage.getItem("auth");
       if (auth) {
@@ -99,188 +93,221 @@ const NewAdvertForm = () => {
     } catch (error) {
       toast.error("Houve um problema! :(")
     }
+    setIsLoading(false);
   }
 
   useEffect(() => {
+    const getCategories = async () => {
+      setIsLoading(true);
+      try {
+        const auth = sessionStorage.getItem("auth");
+        if (auth) {
+          const resultUser = await axios.get(
+            "/user",
+            {
+              headers: { "authorization": auth }
+            }
+          );
+          setUser(resultUser.data);
+          const resultCategories = await axios.get(
+            `/categories`
+          );
+          setCategories(resultCategories.data);
+        } else {
+          navigate("/login");
+        }
+      } catch (error) {
+        navigate("/login");
+      }
+      setIsLoading(false);
+    }
     getCategories();
-  }, []);
+  }, [navigate]);
 
   return (
     <>
       <Head />
-      <HeadTitle title="Profile" />
+      <HeadTitle title="Novo anúncio" />
       <section className="flex flex-col md:flex-row">
         <ProfileMenu linkActive={2} />
-        { user.seller === 1 ? 
-        <article className="p-5 w-full">
-          <h1 className="mb-3 font-bold text-2xl text-green-900">Novo anúncio</h1>
-          <form className="flex flex-col" onSubmit={formik.handleSubmit}>
-            <div className="mb-3">
-              <label className="text-green-900">Título</label><br/>
-              <input
-                className="border-2 p-2 w-full"
-                type="text"
-                name="title"
-                id="title"
-                {...formik.getFieldProps('title')}
-              />
-              {formik.touched.title && formik.errors.title ? (
-              <div className="text-red-600 text-sm">{formik.errors.title}</div>
-              ) : null}
-            </div>
+        { !isLoading 
+        ? user.seller === 1
+          ? <article className="p-5 w-full">
+              <h1 className="mb-3 font-bold text-2xl text-green-900">Novo anúncio</h1>
+              <form className="flex flex-col" onSubmit={formik.handleSubmit}>
+                <div className="mb-3">
+                  <label className="text-green-900">Título</label><br/>
+                  <input
+                    className="border-2 p-2 w-full"
+                    type="text"
+                    name="title"
+                    id="title"
+                    {...formik.getFieldProps('title')}
+                  />
+                  {formik.touched.title && formik.errors.title ? (
+                  <div className="text-red-600 text-sm">{formik.errors.title}</div>
+                  ) : null}
+                </div>
 
-            <div className="mb-3">
-              <label className="text-green-900">Descrição</label><br/>
-              <textarea
-                className="border-2 p-2 w-full h-24"
-                name="description"
-                id="description"
-                {...formik.getFieldProps('description')}
-              >
-              </textarea>
-              {formik.touched.description && formik.errors.description ? (
-              <div className="text-red-600 text-sm">{formik.errors.description}</div>
-              ) : null}
-            </div>
+                <div className="mb-3">
+                  <label className="text-green-900">Descrição</label><br/>
+                  <textarea
+                    className="border-2 p-2 w-full h-24"
+                    name="description"
+                    id="description"
+                    {...formik.getFieldProps('description')}
+                  >
+                  </textarea>
+                  {formik.touched.description && formik.errors.description ? (
+                  <div className="text-red-600 text-sm">{formik.errors.description}</div>
+                  ) : null}
+                </div>
 
-            <div className="mb-3">
-              <label className="text-green-900">Imagens</label><br/>
-              <input
-                type="file"
-                name="cover"
-                onChange={handleChangeFile}
-                accept="image/png, image/jpeg"
-              />
-              {
-                image ?
-                <img
-                  src={ image }
-                  alt=""
-                  className="w-80 border-2 border-green-900 mt-2"
-                /> :
-                ""
-              }
-            </div>
+                <div className="mb-3">
+                  <label className="text-green-900">Imagens</label><br/>
+                  <input
+                    type="file"
+                    name="cover"
+                    onChange={handleChangeFile}
+                    accept="image/png, image/jpeg"
+                  />
+                  {
+                    image ?
+                    <img
+                      src={ image }
+                      alt=""
+                      className="w-80 border-2 border-green-900 mt-2"
+                    /> :
+                    ""
+                  }
+                </div>
 
-            <div className="mb-3">
-              <label className="text-green-900">Categoria</label><br/>
-              <select
-                name="categoryId"
-                id="categoryId"
-                className="border-2 p-2 w-32"
-                {...formik.getFieldProps('categoryId')}
-              >
-                {
-                  categories.map((category) => (
-                    <option key={ category.id } value={ category.id }>
-                      { category.title }
-                    </option>
-                  ))
-                }
-              </select>
-            </div>
+                <div className="mb-3">
+                  <label className="text-green-900">Categoria</label><br/>
+                  <select
+                    name="categoryId"
+                    id="categoryId"
+                    className="border-2 p-2 w-32"
+                    {...formik.getFieldProps('categoryId')}
+                  >
+                    {
+                      categories.map((category) => (
+                        <option key={ category.id } value={ category.id }>
+                          { category.title }
+                        </option>
+                      ))
+                    }
+                  </select>
+                </div>
 
-            <div className="mb-3">
-              <label className="text-green-900">Quantidade</label><br/>
-              <input
-                type="text"
-                className="border-2 p-2 w-24"
-                name="amount"
-                id="amount"
-                min="0"
-                {...formik.getFieldProps('amount')}
-              />
-              {formik.touched.amount && formik.errors.amount ? (
-              <div className="text-red-600 text-sm">{formik.errors.amount}</div>
-              ) : null}
-            </div>
+                <div className="mb-3">
+                  <label className="text-green-900">Quantidade</label><br/>
+                  <input
+                    type="text"
+                    className="border-2 p-2 w-24"
+                    name="amount"
+                    id="amount"
+                    min="0"
+                    {...formik.getFieldProps('amount')}
+                  />
+                  {formik.touched.amount && formik.errors.amount ? (
+                  <div className="text-red-600 text-sm">{formik.errors.amount}</div>
+                  ) : null}
+                </div>
 
-            <div className="mb-3">
-              <label className="text-green-900">Peso</label><br/>
-              <input
-                type="text"
-                className="border-2 p-2 w-24"
-                placeholder="kg"
-                name="weight"
-                id="weight"
-                {...formik.getFieldProps('weight')}
-              />
-              {formik.touched.weight && formik.errors.weight ? (
-              <div className="text-red-600 text-sm">{formik.errors.weight}</div>
-              ) : null}
-            </div>
+                <div className="mb-3">
+                  <label className="text-green-900">Peso</label><br/>
+                  <input
+                    type="text"
+                    className="border-2 p-2 w-24"
+                    placeholder="kg"
+                    name="weight"
+                    id="weight"
+                    {...formik.getFieldProps('weight')}
+                  />
+                  {formik.touched.weight && formik.errors.weight ? (
+                  <div className="text-red-600 text-sm">{formik.errors.weight}</div>
+                  ) : null}
+                </div>
 
-            <div className="flex">
-              <div className="mb-3 mr-2">
-                <label className="text-green-900">Largura</label><br/>
-                <input
-                  type="text"
-                  className="border-2 p-2 w-24"
-                  placeholder="cm"
-                  name="width"
-                  id="width"
-                  {...formik.getFieldProps('width')}
-                />
-                {formik.touched.width && formik.errors.width ? (
-                <div className="text-red-600 text-sm">{formik.errors.width}</div>
-                ) : null}
-              </div>
+                <div className="flex">
+                  <div className="mb-3 mr-2">
+                    <label className="text-green-900">Largura</label><br/>
+                    <input
+                      type="text"
+                      className="border-2 p-2 w-24"
+                      placeholder="cm"
+                      name="width"
+                      id="width"
+                      {...formik.getFieldProps('width')}
+                    />
+                    {formik.touched.width && formik.errors.width ? (
+                    <div className="text-red-600 text-sm">{formik.errors.width}</div>
+                    ) : null}
+                  </div>
 
-              <div className="mb-3 mr-2">
-                <label className="text-green-900">Altura</label><br/>
-                <input
-                  type="text"
-                  className="border-2 p-2 w-24"
-                  placeholder="cm"
-                  name="height"
-                  id="height"
-                  {...formik.getFieldProps('height')}
-                />
-                {formik.touched.height && formik.errors.height ? (
-                <div className="text-red-600 text-sm">{formik.errors.height}</div>
-                ) : null}
-              </div>
+                  <div className="mb-3 mr-2">
+                    <label className="text-green-900">Altura</label><br/>
+                    <input
+                      type="text"
+                      className="border-2 p-2 w-24"
+                      placeholder="cm"
+                      name="height"
+                      id="height"
+                      {...formik.getFieldProps('height')}
+                    />
+                    {formik.touched.height && formik.errors.height ? (
+                    <div className="text-red-600 text-sm">{formik.errors.height}</div>
+                    ) : null}
+                  </div>
 
-              <div className="mb-3">
-                <label className="text-green-900">Profundidade</label><br/>
-                <input
-                  type="text"
-                  className="border-2 p-2 w-24"
-                  placeholder="cm"
-                  name="depth"
-                  id="depth"
-                  {...formik.getFieldProps('depth')}
-                />
-                {formik.touched.depth && formik.errors.depth ? (
-                <div className="text-red-600 text-sm">{formik.errors.depth}</div>
-                ) : null}
-              </div>
-            </div>
+                  <div className="mb-3">
+                    <label className="text-green-900">Profundidade</label><br/>
+                    <input
+                      type="text"
+                      className="border-2 p-2 w-24"
+                      placeholder="cm"
+                      name="depth"
+                      id="depth"
+                      {...formik.getFieldProps('depth')}
+                    />
+                    {formik.touched.depth && formik.errors.depth ? (
+                    <div className="text-red-600 text-sm">{formik.errors.depth}</div>
+                    ) : null}
+                  </div>
+                </div>
 
-            <div className="mb-5">
-              <label className="text-green-900">Preço</label><br/>
-              <input
-                type="text"
-                className="border-2 p-2 w-32"
-                placeholder="R$"
-                name="price"
-                id="price"
-                {...formik.getFieldProps('price')}
-              />
-              {formik.touched.price && formik.errors.price ? (
-              <div className="text-red-600 text-sm">{formik.errors.price}</div>
-              ) : null}
-            </div>
+                <div className="mb-5">
+                  <label className="text-green-900">Preço</label><br/>
+                  <input
+                    type="text"
+                    className="border-2 p-2 w-32"
+                    placeholder="R$"
+                    name="price"
+                    id="price"
+                    {...formik.getFieldProps('price')}
+                  />
+                  {formik.touched.price && formik.errors.price ? (
+                  <div className="text-red-600 text-sm">{formik.errors.price}</div>
+                  ) : null}
+                </div>
 
-            <button
-              type="submit"
-              className="bg-green-900 p-2 w-24 text-white disabled:bg-gray-400"
-              disabled={ !isValid }
-            >
-              Criar
-            </button>
-          </form>
-          <ToastContainer
+                <button
+                  type="submit"
+                  className="bg-green-900 p-2 w-24 text-white disabled:bg-gray-400"
+                  disabled={ !isValid }
+                >
+                  Criar
+                </button>
+              </form>
+            </article>
+          : <p className="text-green-900 font-bold text-center p-2 w-full">Área restrita para anunciantes.</p>
+        : <div className="flex justify-center w-full">
+            <img src={loading} alt="" className="place-self-center self-center" />
+          </div>
+        }
+      </section>
+      <ToastContainer
             position="top-left"
             autoClose={5000}
             hideProgressBar={false}
@@ -292,9 +319,6 @@ const NewAdvertForm = () => {
             pauseOnHover
             theme="colored"
           />
-        </article>
-        : <p className="text-green-900 font-bold text-center p-2 w-full">Área restrita para anunciantes.</p>}
-      </section>
     </>
   )
 }
