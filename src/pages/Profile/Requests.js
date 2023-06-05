@@ -41,20 +41,22 @@ const Requests = () => {
       <section className="flex flex-col md:flex-row">
         <ProfileMenu linkActive={3} />
         { !isLoading 
-        ?  <section className="p-5 w-full">
-            <h1 className="text-green-900 font-bold text-2xl">Pedidos</h1>
-            <article className="mt-3">
-              {
-                requests.map((request) => (
-                  <ItemRequest
-                    key={request.id}
-                    createdAt={request.createdAt}
-                    data={request.products}
-                  />
-                ))
-              }
-            </article>
-          </section>
+        ? requests
+          ? <section className="p-5 w-full">
+              <h1 className="text-green-900 font-bold text-2xl">Pedidos</h1>
+              <article className="mt-3">
+                {
+                  requests.map((request) => (
+                    <ItemRequest
+                      key={request.id}
+                      createdAt={request.createdAt}
+                      data={request.products}
+                    />
+                  ))
+                }
+              </article>
+            </section>
+          : <p className="text-green-900 font-bold text-center p-2 w-full mt-5">Nada por aqui!</p>
         : <div className="flex justify-center w-full">
             <img src={loading} alt="" className="place-self-center self-center" />
           </div>

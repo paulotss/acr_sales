@@ -41,22 +41,24 @@ const Sales = () => {
       <HeadTitle title="Vendas" />
       <section className="flex flex-col md:flex-row">
         <ProfileMenu linkActive={4} />
-        { !isLoading 
-          ? <section className="p-5 w-full">
-              <h1 className="text-green-900 font-bold text-2xl">Vendas</h1>
-              <article className="mt-3">
-                {
-                  sales.map((sale) => (
-                    <ItemSale
-                      key={ sale.id }
-                      createdAt={ sale.createdAt }
-                      data={ sale.products }
-                      saleId={ sale.id }
-                    />
-                  ))
-                }
-              </article>
-            </section>
+        { !isLoading
+          ? sales
+            ? <section className="p-5 w-full">
+                <h1 className="text-green-900 font-bold text-2xl">Vendas</h1>
+                <article className="mt-3">
+                  {
+                    sales.map((sale) => (
+                      <ItemSale
+                        key={ sale.id }
+                        createdAt={ sale.createdAt }
+                        data={ sale.products }
+                        saleId={ sale.id }
+                      />
+                    ))
+                  }
+                </article>
+              </section>
+            : <p className="text-green-900 font-bold text-center p-2 w-full mt-5">Nada por aqui!</p>
           : <div className="flex justify-center w-full">
               <img src={loading} alt="" className="place-self-center self-center" />
             </div>
