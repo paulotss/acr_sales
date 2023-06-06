@@ -41,7 +41,7 @@ const Requests = () => {
       <section className="flex flex-col md:flex-row">
         <ProfileMenu linkActive={3} />
         { !isLoading 
-        ? requests
+        ? Object.values(requests).length !== 0
           ? <section className="p-5 w-full">
               <h1 className="text-green-900 font-bold text-2xl">Pedidos</h1>
               <article className="mt-3">

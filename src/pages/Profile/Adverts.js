@@ -82,7 +82,7 @@ const Adverts = () => {
                   <span className="text-white text-2xl">+</span>
                 </Link>
               </article>
-              { adverts
+              { Object.values(adverts).length !== 0
               ? <article>
                   {
                     adverts.map((advert) => (
