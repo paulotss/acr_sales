@@ -8,19 +8,21 @@ import loading from "../media/loading.gif";
 
 const SearchCategory = () => {
   const [products, setProducts] = useState([]);
+  const [category, setCategory] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const { id } = useParams();
 
-  const getProducts = async () => {
-    setIsLoading(true);
-    const result = await axios.get(`/products/${id}`);
-    setProducts(result.data);
-    setIsLoading(false);
-  }
-
   useEffect(() => {
+    const getProducts = async () => {
+      setIsLoading(true);
+      const resultCategory = await axios.get(`/category/${id}`);
+      setCategory(resultCategory.data);
+      const resultProducts = await axios.get(`/products/${id}`);
+      setProducts(resultProducts.data);
+      setIsLoading(false);
+    }
     getProducts();
-  }, [])
+  }, [id])
 
   return (
     <main>
@@ -35,11 +37,12 @@ const SearchCategory = () => {
               Categoria:
               {' '}
               <span className="font-bold">
-                { products.length > 0 ? products[0].category.title : "" }
+                { category.title }
               </span>
             </h1>
           </section>
-          <section className="p-10">
+          { products.length !== 0
+          ? <section className="p-10">
             {
               products.map((product) => (
                 <ItemList
@@ -53,6 +56,8 @@ const SearchCategory = () => {
               ))
             }
           </section>
+          : <p className="text-green-900 font-bold text-center p-2 w-full mt-5 h-screen">Nada por aqui!</p>
+          }
           <Footer />
           </>
       }

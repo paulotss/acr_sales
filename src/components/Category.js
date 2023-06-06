@@ -11,6 +11,7 @@ const Category = (props) => {
       <div className="w-10 h-10">
         <img
           src={`${BASE_URL}/static/${props.urlImage}`}
+          alt=""
           className="w-10 h-10"
         />
       </div>
