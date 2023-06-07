@@ -79,10 +79,8 @@ const ItemShow = (props) => {
             headers: { 'authorization': authorization }
           }
         );
-        // const { status } = result.data.charges[0];
-        console.log(result.data);
-        // if (status && status === "PAID"){
-        if (true) {
+        const { status } = result.data.charges[0];
+        if (status && status === "PAID"){
           try {
             const user = await getUser()
             await axios.post(
