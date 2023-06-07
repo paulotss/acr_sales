@@ -2,18 +2,33 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from '../http';
 import { ToastContainer, toast } from "react-toastify";
-import whatsappIcon from '../media/whatsapp.png';
 import loadingGif from '../media/rolling.gif';
 import ShippingSelect from './ShippingSelect';
 
 const ItemShow = (props) => {
   const { productId, title, price, description, cover, amount } = props;
-  const BASE_URL = process.env.REACT_APP_API_BASE_URL;
   const [pixOrder, setPixOrder] = useState({});
   const [statusPix, setStatusPix] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [priceShipping, setPriceShipping] = useState(0);
+  const [shippings, setShippings] = useState([]);
+  const [currentShipping, setCurrentShipping] = useState({
+    id: null,
+    name: null,
+    address: null,
+    price: 0
+  });
   const navigate = useNavigate();
+
+  const handleShippingChange = ({ target }) => {
+    const { value } = target;
+    const result = shippings.find((shipping) => shipping.id === Number(value));
+    setCurrentShipping({
+      id: value,
+      name: result.name,
+      address: result.address,
+      price: result.price
+    });
+  }
 
   const getUser = async () => {
     try {
@@ -36,7 +51,7 @@ const ItemShow = (props) => {
       try {
         const result = await axios.post(
           `/sales/genpix`,
-          { priceShipping, id: productId },
+          { priceShipping: currentShipping.price, id: productId },
           {
             headers: { 'authorization': authorization }
           }
@@ -64,13 +79,19 @@ const ItemShow = (props) => {
             headers: { 'authorization': authorization }
           }
         );
-        const { status } = result.data.charges[0];
-        if (status && status === "PAID"){
+        // const { status } = result.data.charges[0];
+        console.log(result.data);
+        // if (status && status === "PAID"){
+        if (true) {
           try {
             const user = await getUser()
             await axios.post(
               '/sales',
-              { userId: user.id, productId: productId }
+              {
+                userId: user.id,
+                productId: productId,
+                shippingId: currentShipping.id,
+              }
             );
             await axios.put(
               `/product/${productId}`,
@@ -84,7 +105,6 @@ const ItemShow = (props) => {
         } else {
           toast.error("Houve um erro!");
         }
-        console.log(status);
       } catch (error) {
         toast.error("Tente novamente!");
         console.log(pixOrder.id);
@@ -103,6 +123,7 @@ const ItemShow = (props) => {
         <div className="flex justify-center bg-gray-300 md:w-96">
           <img
             src={ `https://tebas-bucket.s3.sa-east-1.amazonaws.com/${cover}` }
+            alt=""
             className="object-contain"
           />
         </div>
@@ -114,7 +135,7 @@ const ItemShow = (props) => {
       
       <div className="w-full">
         <div className="mb-3 text-2xl font-bold text-white bg-green-600 p-2 md:rounded-r-full md:w-80 w-full md:text-right">
-          { (priceShipping + price).toLocaleString(
+          { (currentShipping.price + price).toLocaleString(
             'pt-BR',
             { style:'currency', currency:'BRL' }) }
         </div>
@@ -124,7 +145,11 @@ const ItemShow = (props) => {
             { props.userEmail }
           </div>
           <ShippingSelect
-            setPriceShipping={setPriceShipping}
+            handleShippingChange={handleShippingChange}
+            currentShipping={currentShipping}
+            setCurrentShipping={setCurrentShipping}
+            setShippings={setShippings}
+            shippings={shippings}
             statusPix={Object.keys(pixOrder).length > 0} />
           {
             Object.keys(pixOrder).length === 0 ?
@@ -137,7 +162,11 @@ const ItemShow = (props) => {
               {
                 !isLoading ?
                   'Gerar Pix' :
-                  <img src={ loadingGif } className="w-5 object-contain text-center" />
+                  <img
+                    src={ loadingGif }
+                    alt=""
+                    className="w-5 object-contain text-center"
+                  />
               }
             </button> :
             <div className="flex flex-col items-center">
@@ -146,6 +175,7 @@ const ItemShow = (props) => {
                 <>
                   <img
                     src={ pixOrder.qr_codes[0].links[0].href }
+                    alt=""
                     className="w-64 mt-3"
                   />
                   <button
@@ -157,7 +187,11 @@ const ItemShow = (props) => {
                     {
                       !isLoading ?
                         'Confirmar pagamento' :
-                        <img src={ loadingGif } className="w-5 object-contain text-center" />
+                        <img
+                          src={ loadingGif }
+                          alt=""
+                          className="w-5 object-contain text-center"
+                        />
                     }
                   </button>
                 </> :

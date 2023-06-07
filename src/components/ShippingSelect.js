@@ -1,28 +1,16 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import axios from "../http";
 
 const ShippingSelect = (props) => {
-  const { setPriceShipping, statusPix } = props;
   const DEFAULT_SHIPPING_ID = 10;
-  const [shippings, setShippings] = useState([]);
-  const [currentShipping, setCurrentShipping] = useState({
-    id: DEFAULT_SHIPPING_ID,
-    name: "",
-    address: "",
-    price: 0
-  });
-
-  const handleShippingChange = ({ target }) => {
-    const { value } = target;
-    const result = shippings.find((shipping) => shipping.id === Number(value));
-    setCurrentShipping({
-      id: value,
-      name: result.name,
-      address: result.address,
-      price: result.price
-    });
-    setPriceShipping(result.price);
-  }
+  const {
+    statusPix,
+    handleShippingChange,
+    currentShipping,
+    setCurrentShipping,
+    setShippings,
+    shippings
+  } = props;
 
   useEffect(() => {
     const getShippings = async () => {
@@ -33,13 +21,12 @@ const ShippingSelect = (props) => {
           data.id === DEFAULT_SHIPPING_ID
         ));
         setCurrentShipping(defaultShipping);
-        setPriceShipping(defaultShipping.price);
       } catch (error) {
         console.log(error);
       }
     }
     getShippings();
-  }, []);
+  }, [setCurrentShipping, setShippings]);
 
   return (
     <div className="m-2">
